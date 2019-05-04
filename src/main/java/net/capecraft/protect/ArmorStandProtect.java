@@ -43,7 +43,7 @@ public class ArmorStandProtect implements Listener {
 		
 		ArmorStandProtect.pdfFile = instance.getDescription();        
 		ArmorStandProtect.logger = Logger.getLogger("Minecraft");  
-		ArmorStandProtect.dbName = "plugins/CapeCraft/ArmorStands.db";
+		ArmorStandProtect.dbName = "plugins/CapeCraft/ProtectedEntities.db";
 		SQLUtils.sqlInit(dbName);	      	
 	}
       
@@ -80,9 +80,10 @@ public class ArmorStandProtect implements Listener {
 			if (diff < 10) {
 				Connection connection = SQLUtils.sqlOpen(dbName);
 				try {   
-					PreparedStatement statement = connection.prepareStatement("insert into armorstand values(?, ?); ");
+					PreparedStatement statement = connection.prepareStatement("insert into ProtectedEntities values(?, ?, ?); ");
 					statement.setString(1, Utils.hexEncode(armorStandUuid.toString()));
 					statement.setString(2, Utils.hexEncode(armorStandPlayer.getUniqueId().toString()));
+					statement.setString(3, Utils.hexEncode(armorStandPlayer.getName()));
 					SQLUtils.sqlUpdate(connection, statement);   
 				} catch (Exception oops) {
 	                 	logger.severe("[" + pdfFile.getName() + "] Exception: '" + oops.getMessage() + "'. ");       
@@ -100,40 +101,12 @@ public class ArmorStandProtect implements Listener {
        	
 	@EventHandler (priority = EventPriority.LOW)
 	public void entityDamageByEntityEventHandler (EntityDamageByEntityEvent event) {
-		if (event.isCancelled() == false) {
+		if (!event.isCancelled()) {
 			Entity damager = event.getDamager();
 			if (damager instanceof Player) {
-				Player player = (Player) damager;
 				Entity entity = event.getEntity();
-				UUID ownerId = null;           
 				if (entity instanceof ArmorStand) {
-					ArmorStand armorStand = (ArmorStand) entity;
-					if (armorStand != null) {
-						Connection connection = SQLUtils.sqlOpen(dbName);
-						try {   
-							PreparedStatement statement = connection.prepareStatement("select * from armorstand where stand=?; ");
-							statement.setString(1, Utils.hexEncode(armorStand.getUniqueId().toString()));
-							ResultSet data = SQLUtils.sqlQuery(connection, statement);
-							if (data != null) {
-								if (data.next()) {
-									ownerId = UUID.fromString(Utils.hexDecode(data.getString("player")));
-								}
-							}
-						} catch (Exception oops) {
-							logger.severe("[" + pdfFile.getName() + "] Exception: '" + oops.getMessage() + "'. ");       
-							oops.printStackTrace(System.err);           
-						} finally {
-							SQLUtils.sqlClose(connection);
-						}
-						if (player.getUniqueId().equals(ownerId) == false) {							
-							if (player.hasPermission("capecraft.admin") || ownerId == null) {                               
-								return;	                       
-							} else {
-								event.setCancelled(true);
-								player.sendMessage(Main.PREFIX + "That armor stand belongs to someone else. ");
-							}
-						}
-					}                   
+					event.setCancelled(startRemoveProcess((Player) damager, (ArmorStand) entity));
 				}
 			}
 		}
@@ -141,34 +114,44 @@ public class ArmorStandProtect implements Listener {
 	   
 	@EventHandler (priority = EventPriority.LOW)
 	public void playerArmorStandManipulateEventHandler (PlayerArmorStandManipulateEvent event) {
-		if (event.isCancelled() == false) {
-			Player player = event.getPlayer();
-			UUID ownerId = null;
-			ArmorStand armorStand = event.getRightClicked();
-			Connection connection = SQLUtils.sqlOpen(dbName);
-			try {   
-				PreparedStatement statement = connection.prepareStatement("select * from armorstand where stand=?; ");
-				statement.setString(1, Utils.hexEncode(armorStand.getUniqueId().toString()));
-				ResultSet data = SQLUtils.sqlQuery(connection, statement);
-				if (data != null) {
-					if (data.next()) {
-						ownerId = UUID.fromString(Utils.hexDecode(data.getString("player")));
-					}
+		if (!event.isCancelled()) {
+			event.setCancelled(startRemoveProcess(event.getPlayer(), event.getRightClicked()));
+		}
+	}
+
+	private boolean startRemoveProcess(Player player, ArmorStand armorStand) {
+		UUID ownerId = null;
+		String ownerName = null;
+		Connection connection = SQLUtils.sqlOpen(dbName);
+		try {
+			PreparedStatement statement = connection.prepareStatement("select * from ProtectedEntities where entity=?; ");
+			statement.setString(1, Utils.hexEncode(armorStand.getUniqueId().toString()));
+			ResultSet data = SQLUtils.sqlQuery(connection, statement);
+			if (data != null) {
+				if (data.next()) {
+					ownerId = UUID.fromString(Utils.hexDecode(data.getString("player")));
+					ownerName = Utils.hexDecode(data.getString("username"));
 				}
-			} catch (Exception oops) {
-				logger.severe("[" + pdfFile.getName() + "] Exception: '" + oops.getMessage() + "'. ");       
-				oops.printStackTrace(System.err);           
-			} finally {
-				SQLUtils.sqlClose(connection);
 			}
-			if (player.getUniqueId().equals(ownerId) == false) {
-				if (player.hasPermission("capecraft.admin")) {
-					return;
+		} catch (Exception oops) {
+			logger.severe("[" + pdfFile.getName() + "] Exception: '" + oops.getMessage() + "'. ");
+			oops.printStackTrace(System.err);
+		} finally {
+			SQLUtils.sqlClose(connection);
+		}
+		if (player.getUniqueId().equals(ownerId) == false) {
+			if (player.hasPermission("capecraft.admin")) {
+				if(player.getInventory().getItemInMainHand().getType() == Material.CARROT_ON_A_STICK) {
+					player.sendMessage(Main.PREFIX + "That armor stand is owned by " + ownerName);
+					return true;
 				} else {
-					event.setCancelled(true);
-					player.sendMessage(Main.PREFIX + "That armor stand belongs to someone else. ");
+					return false;
 				}
+			} else {
+				player.sendMessage(Main.PREFIX + "That armor stand belongs to someone else!");
+				return true;
 			}
 		}
-	}   
+		return false;
+	}
 }

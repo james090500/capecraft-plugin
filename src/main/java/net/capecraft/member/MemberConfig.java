@@ -93,7 +93,7 @@ public class MemberConfig implements Listener {
 		updateConfig(alt, p.hasPermission("group.alt"), uuid);			
 		updateConfig(jointime, (System.currentTimeMillis() / 1000), uuid);
 		updateConfig(username, p.getName(), uuid);		
-		int playTimeMin = Int.parseInt(readConfig(playtime, uuid));
+		int playTimeMin = Integer.parseInt(readConfig(playtime, uuid).toString());
 		
 		//25 hours player
 		if(playTimeMin >= 1500 && !p.hasPermission("group.player")) {
