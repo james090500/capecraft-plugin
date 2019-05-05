@@ -22,7 +22,7 @@ public class SQLUtils {
 	   Connection connection = sqlOpen(dbName);
 	   PreparedStatement statement = null;
 	   try {
-		   statement = connection.prepareStatement("create table if not exists ProtectedEntities (entity varchar(255), player varchar(255), username varchar(255);  ");
+		   statement = connection.prepareStatement("create table if not exists ProtectedEntities (entity varchar(255), player varchar(255), username varchar(255));");
 		   sqlUpdate(connection, statement);       
 	   } catch (Exception oops) {
 		   ArmorStandProtect.logger.severe("[" + ArmorStandProtect.pdfFile.getName() + "] Exception: '" + oops.getMessage() + "'. ");       

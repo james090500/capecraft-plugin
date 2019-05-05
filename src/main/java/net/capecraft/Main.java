@@ -1,6 +1,7 @@
 package net.capecraft;
 
 import net.capecraft.admin.MovePlayer;
+import net.capecraft.admin.VoidTeleport;
 import net.capecraft.commands.PluginList;
 import net.capecraft.member.MemberCommands;
 import net.capecraft.member.MemberConfig;
@@ -27,6 +28,7 @@ public class Main extends JavaPlugin {
 		getCommand("moveplayer").setExecutor(new MovePlayer(this));
 
 		//Events
+		getServer().getPluginManager().registerEvents(new VoidTeleport(), this);
 		getServer().getPluginManager().registerEvents(new MemberConfig(this), this);
 		getServer().getPluginManager().registerEvents(new ArmorStandProtect(this), this);
 		getServer().getPluginManager().registerEvents(new ItemFrameProtect(this), this);
