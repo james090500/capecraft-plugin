@@ -65,7 +65,7 @@ public class ItemFrameProtect implements Listener {
 		if (event.getItem() != null) {
 			ItemStack item = event.getItem();
 			Material material = item.getType();
-			if (material.equals(Material.ARMOR_STAND)) {
+			if (material.equals(Material.ITEM_FRAME)) {
 				itemFramePlayer = player;
 				itemFramePlayerTime = System.currentTimeMillis();
 				czechItemFrame();
