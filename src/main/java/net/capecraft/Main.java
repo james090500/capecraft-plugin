@@ -12,7 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin {
 
-	public static final String PREFIX = "&c&lCapeCraft &9»&r";
+	public static final String PREFIX = "§c§lCapeCraft §9»§r";
 
 	@Override
 	public void onEnable() {

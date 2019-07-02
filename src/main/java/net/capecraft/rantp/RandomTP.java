@@ -4,7 +4,6 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import org.bukkit.Location;
-import org.bukkit.World.Environment;
 import org.bukkit.entity.Player;
 
 import net.capecraft.Main;
