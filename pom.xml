@@ -1,31 +1,40 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-  <groupId>net</groupId>
-  <artifactId>capecraft</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>jar</packaging>
+	<groupId>net</groupId>
+  	<artifactId>capecraft</artifactId>
+  	<version>0.0.1-SNAPSHOT</version>
+  	<packaging>jar</packaging>
 
-  <name>CapeCraft</name>
-  <url>http://maven.apache.org</url>
+  	<name>CapeCraft</name>
+  	<url>http://maven.apache.org</url>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+  	<properties>
+    	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  	</properties>
 
-  <repositories>
-      <repository>
-          <id>maven-snapshots</id>
-          <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-      </repository>
-  </repositories>
-  <dependencies>
-      <dependency>
-          <groupId>org.spigotmc</groupId>
-          <artifactId>spigot-api</artifactId>
-          <version>1.14.3-SNAPSHOT</version>
-          <scope>provided</scope>
-      </dependency>
-  </dependencies>
+	<build>    
+        <sourceDirectory>src/main/java</sourceDirectory>
+        <defaultGoal>clean install</defaultGoal>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+	</build>
+  	<repositories>
+      	<repository>
+          	<id>maven-snapshots</id>
+          	<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+      	</repository>
+  	</repositories>
+  	<dependencies>
+      	<dependency>
+          	<groupId>org.spigotmc</groupId>
+          	<artifactId>spigot-api</artifactId>
+          	<version>1.14.3-SNAPSHOT</version>
+          	<scope>provided</scope>
+      	</dependency>
+  	</dependencies>
 </project>

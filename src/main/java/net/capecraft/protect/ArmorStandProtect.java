@@ -10,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -99,16 +100,23 @@ public class ArmorStandProtect implements Listener {
 		}
 	}
        	
-	@EventHandler (priority = EventPriority.LOW)
-	public void entityDamageByEntityEventHandler (EntityDamageByEntityEvent event) {
+	@EventHandler(priority = EventPriority.LOW)
+	public void entityDamageByEntityEventHandler(EntityDamageByEntityEvent event) {
 		if (!event.isCancelled()) {
-			Entity damager = event.getDamager();
-			if (damager instanceof Player) {
-				Entity entity = event.getEntity();
-				if (entity instanceof ArmorStand) {
-					event.setCancelled(startRemoveProcess((Player) damager, (ArmorStand) entity));
+			Entity entity = event.getEntity();
+
+			if (entity instanceof ArmorStand) {
+				Entity damager = event.getDamager();
+				if(damager instanceof Player) {
+					event.setCancelled(startRemoveProcess((Player) damager, (ArmorStand) entity));				
 				}
-			}
+				
+				if(damager instanceof Projectile) {					
+					if(((Projectile) damager).getShooter() instanceof Player) {
+						event.setCancelled(startRemoveProcess(((Player) ((Projectile) damager).getShooter()), (ArmorStand) entity));
+					}
+				}				
+			}			
 		}
 	}
 	   
@@ -151,7 +159,8 @@ public class ArmorStandProtect implements Listener {
 				player.sendMessage(Main.PREFIX + "That armor stand belongs to someone else!");
 				return true;
 			}
+		} else {
+			return false;
 		}
-		return false;
 	}
 }

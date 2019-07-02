@@ -1,7 +1,8 @@
 package net.capecraft.admin;
 
-import com.james090500.APIManager.UserInfo;
-import net.capecraft.Main;
+import java.text.DecimalFormat;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -11,7 +12,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import java.util.UUID;
+import com.james090500.APIManager.UserInfo;
+
+import net.capecraft.Main;
 
 public class MovePlayer implements CommandExecutor {
 
@@ -45,15 +48,23 @@ public class MovePlayer implements CommandExecutor {
 	private void movePlayerInfo(Player sender, String target) {
 		String parsedUUID = UserInfo.getParsedUUID(target);
 		if (parsedUUID != null) {
-			UUID targetUUID = UUID.fromString(UserInfo.getParsedUUID(target));
+			UUID targetUUID = UUID.fromString(parsedUUID);
 			OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(targetUUID);
 			if (offlinePlayer.hasPlayedBefore()) {
 				Location opLocation = offlinePlayer.getPlayer().getLocation();
-				sender.sendMessage(String.format(Main.PREFIX + target + " is currently at %s %s %s", opLocation.getX(), opLocation.getY(), opLocation.getZ()));
-			} else {
+				
+				DecimalFormat df = new DecimalFormat();
+				df.setMaximumFractionDigits(2);
+				
+				String xCord = df.format(opLocation.getX());
+				String yCord = df.format(opLocation.getY());
+				String zCord = df.format(opLocation.getZ());
+				
+				sender.sendMessage(String.format(Main.PREFIX + target + " is currently at %s %s %s", xCord, yCord, zCord));
+			} else {				
 				sender.sendMessage(Main.PREFIX + "That user doesn't exist");
 			}
-		} else {
+		} else {			
 			sender.sendMessage(Main.PREFIX + "That user doesn't exist");
 		}
 	}

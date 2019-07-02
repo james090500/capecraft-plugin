@@ -1,28 +1,31 @@
 package net.capecraft.protect;
 
-import net.capecraft.Main;
-import net.capecraft.protect.utils.SQLUtils;
-import net.capecraft.protect.utils.Utils;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.UUID;
+import java.util.logging.Logger;
+
 import org.bukkit.Material;
-import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
+import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.UUID;
-import java.util.logging.Logger;
+import net.capecraft.Main;
+import net.capecraft.protect.utils.SQLUtils;
+import net.capecraft.protect.utils.Utils;
 
 public class ItemFrameProtect implements Listener {
 
@@ -99,18 +102,28 @@ public class ItemFrameProtect implements Listener {
 	}
 
 	@EventHandler(priority = EventPriority.LOW)
-	public void entityDamageByEntityEventHandler(EntityDamageByEntityEvent event) {
+	public void hangingBreakByEntityEventHandler(HangingBreakByEntityEvent event) {
 		if (!event.isCancelled()) {
-			Entity damager = event.getDamager();
-			if (damager instanceof Player) {
-				Entity entity = event.getEntity();
-				if (entity instanceof ItemFrame) {
-					event.setCancelled(startRemoveProcess((Player) damager, (ItemFrame) entity));
+			Entity entity = event.getEntity();
+						
+			System.out.println(event.getRemover());
+
+			if (entity instanceof ItemFrame) {										
+				Entity damager = event.getRemover();
+				
+				if(damager instanceof Player) {
+					event.setCancelled(startRemoveProcess((Player) damager, (ItemFrame) entity));				
 				}
-			}
+				
+				if(damager instanceof Projectile) {					
+					if(((Projectile) damager).getShooter() instanceof Player) {
+						event.setCancelled(startRemoveProcess(((Player) ((Projectile) damager).getShooter()), (ItemFrame) entity));
+					}
+				}				
+			}			
 		}
 	}
-
+	
 	@EventHandler(priority = EventPriority.LOW)
 	public void playerItemFrameManipulateEventHandler(PlayerInteractEntityEvent event) {
 		if (!event.isCancelled()) {
@@ -119,6 +132,26 @@ public class ItemFrameProtect implements Listener {
 			}
 		}
 	}
+	
+	@EventHandler(priority = EventPriority.LOW)
+	public void entityDamageByEntityEventHandler(EntityDamageByEntityEvent event) {		
+		if (!event.isCancelled()) {
+			Entity entity = event.getEntity();
+			if (entity instanceof ItemFrame) {										
+				Entity damager = event.getDamager();
+				
+				if(damager instanceof Player) {
+					event.setCancelled(startRemoveProcess((Player) damager, (ItemFrame) entity));				
+				}
+				
+				if(damager instanceof Projectile) {					
+					if(((Projectile) damager).getShooter() instanceof Player) {
+						event.setCancelled(startRemoveProcess(((Player) ((Projectile) damager).getShooter()), (ItemFrame) entity));
+					}
+				}				
+			}
+		}
+	} 
 
 	private boolean startRemoveProcess(Player player, ItemFrame itemFrame) {
 		UUID ownerId = null;
@@ -141,7 +174,7 @@ public class ItemFrameProtect implements Listener {
 			SQLUtils.sqlClose(connection);
 		}
 
-		if (player.getUniqueId().equals(ownerId) == false) {
+		if (!player.getUniqueId().equals(ownerId)) {
 			if (player.hasPermission("capecraft.admin")) {
 				if (player.getInventory().getItemInMainHand().getType() == Material.CARROT_ON_A_STICK) {
 					player.sendMessage(Main.PREFIX + "That item frame is owned by " + ownerName);
@@ -153,7 +186,8 @@ public class ItemFrameProtect implements Listener {
 				player.sendMessage(Main.PREFIX + "That item frame belongs to someone else!");
 				return true;
 			}
-		}
-		return false;
+		} else {
+			return false;	
+		}		
 	}
 }

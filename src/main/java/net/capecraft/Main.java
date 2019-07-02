@@ -1,18 +1,17 @@
 package net.capecraft;
 
+import org.bukkit.plugin.java.JavaPlugin;
 
-import net.capecraft.admin.MovePlayer;
 import net.capecraft.admin.VoidTeleport;
 import net.capecraft.commands.PluginList;
 import net.capecraft.member.MemberCommands;
 import net.capecraft.member.MemberConfig;
 import net.capecraft.protect.ArmorStandProtect;
 import net.capecraft.protect.ItemFrameProtect;
-import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin {
 
-	public static final String PREFIX = "§c§lCapeCraft §9»§r";
+	public static final String PREFIX = "§c§lCapeCraft §9»§r ";
 
 	@Override
 	public void onEnable() {
@@ -26,7 +25,10 @@ public class Main extends JavaPlugin {
 		getCommand("playtimetop").setExecutor(new MemberCommands(this));
 
 		//Admin Stuff
-		getCommand("moveplayer").setExecutor(new MovePlayer(this));
+		/*
+		 * Not enabled because not doing NBT edittings
+		 * getCommand("moveplayer").setExecutor(new MovePlayer(this));
+		 */
 
 		//Events
 		getServer().getPluginManager().registerEvents(new VoidTeleport(), this);

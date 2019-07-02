@@ -71,7 +71,7 @@ public class MemberCommands implements CommandExecutor {
 					int count = 0;
 					int max = 4;
 					
-					p.sendMessage("�e----- �rTop 5 users with playtime �e-----");			
+					p.sendMessage("§e-----§r Top 5 users with playtime §e-----");			
 					TreeMap<Integer, String> treemap = new TreeMap<>(playtimes);
 					for(Integer entry : treemap.descendingKeySet()) {
 						if(treemap.get(entry) != null) {						
@@ -81,7 +81,7 @@ public class MemberCommands implements CommandExecutor {
 							p.sendMessage(count + ". " + entry + "hrs, " + treemap.get(entry));
 						}
 					}
-					p.sendMessage("�e---------------------------------");
+					p.sendMessage("§e---------------------------------");
 				}							
 			});	
 		}
