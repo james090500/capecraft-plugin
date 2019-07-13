@@ -8,7 +8,7 @@ public class CooldownManager {
 	//Will contain the uuid of the users and when they executed the command
 	private HashMap<UUID, Long> cooldowns = new HashMap<>();
 	//60 second cooldown between commands
-    public static final int DEFAULT_COOLDOWN = 60;
+    public static final int DEFAULT_COOLDOWN = 300;
 
     //Will add the cooldown to a player or will remove the player from the cooldown.
     public void setCooldown(UUID player, long time){
