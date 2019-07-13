@@ -13,5 +13,5 @@ commands:
     description: RandomTP
   rtp:
     description: RandomTP
-  moveplayer:
-    description: Moving a player
+  cape:
+    description: cape command

@@ -23,6 +23,9 @@ public class Main extends JavaPlugin {
 		//Playtime
 		getCommand("playtime").setExecutor(new MemberCommands(this));
 		getCommand("playtimetop").setExecutor(new MemberCommands(this));
+		
+		//Cape
+		getCommand("cape").setExecutor(new MemberCommands(this));
 
 		//Admin Stuff
 		/*

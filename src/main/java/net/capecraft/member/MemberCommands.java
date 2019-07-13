@@ -85,6 +85,11 @@ public class MemberCommands implements CommandExecutor {
 				}							
 			});	
 		}
+		
+		if(commandLabel.equalsIgnoreCase("cape")) {
+			sender.sendMessage(Main.PREFIX + "To get a cape visit https://minecraftcapes.co.uk/discord");
+		}
+		
 		return false;
 	}
 }
