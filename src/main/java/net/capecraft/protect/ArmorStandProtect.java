@@ -140,6 +140,8 @@ public class ArmorStandProtect implements Listener {
 					ownerId = UUID.fromString(Utils.hexDecode(data.getString("player")));
 					ownerName = Utils.hexDecode(data.getString("username"));
 				}
+			} else {
+				return false;
 			}
 		} catch (Exception oops) {
 			logger.severe("[" + pdfFile.getName() + "] Exception: '" + oops.getMessage() + "'. ");
