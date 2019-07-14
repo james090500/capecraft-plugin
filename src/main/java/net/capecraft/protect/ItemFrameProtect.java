@@ -175,6 +175,10 @@ public class ItemFrameProtect implements Listener {
 		} finally {
 			SQLUtils.sqlClose(connection);
 		}
+		
+		if(ownerId == null) {
+			return false;
+		}
 
 		if (!player.getUniqueId().equals(ownerId)) {
 			if (player.hasPermission("capecraft.admin")) {

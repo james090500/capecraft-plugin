@@ -95,6 +95,10 @@ public class MemberConfig implements Listener {
 		updateConfig(username, p.getName(), uuid);		
 		int playTimeMin = Integer.parseInt(readConfig(playtime, uuid).toString());
 
+		if(p.hasPermission("group.alt")) {
+			return;
+		}
+		
 		//25 hours regular
 		if(playTimeMin >= 1500 && !p.hasPermission("group.regular")) {
 			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getName() + " permission set group.regular");

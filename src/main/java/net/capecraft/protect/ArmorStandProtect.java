@@ -149,6 +149,11 @@ public class ArmorStandProtect implements Listener {
 		} finally {
 			SQLUtils.sqlClose(connection);
 		}
+		
+		if(ownerId == null) {
+			return false;
+		}
+		
 		if (player.getUniqueId().equals(ownerId) == false) {
 			if (player.hasPermission("capecraft.admin")) {
 				if(player.getInventory().getItemInMainHand().getType() == Material.CARROT_ON_A_STICK) {
