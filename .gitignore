@@ -2,4 +2,4 @@
 .settings
 bin/
 .idea/
-/target/
+target/

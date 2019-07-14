@@ -20,7 +20,7 @@ public class RandomTP {
 	public void teleportPlayer(Player player) {
 		//Check if the player is past the cooldown time
 		Long timePast = System.currentTimeMillis() - CooldownManager.INSTANCE.getCooldown(player.getUniqueId());
-		int timeLeft = (int) (60 - TimeUnit.MILLISECONDS.toSeconds(timePast));	
+		int timeLeft = (int) (CooldownManager.DEFAULT_COOLDOWN - TimeUnit.MILLISECONDS.toSeconds(timePast));	
 
 		//If player is past cooldown
 		if(TimeUnit.MILLISECONDS.toSeconds(timePast) >= CooldownManager.DEFAULT_COOLDOWN) {
