@@ -105,8 +105,6 @@ public class ItemFrameProtect implements Listener {
 	public void hangingBreakByEntityEventHandler(HangingBreakByEntityEvent event) {
 		if (!event.isCancelled()) {
 			Entity entity = event.getEntity();
-						
-			System.out.println(event.getRemover());
 
 			if (entity instanceof ItemFrame) {										
 				Entity damager = event.getRemover();

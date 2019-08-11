@@ -2,6 +2,7 @@ package net.capecraft;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+import net.capecraft.admin.ServerSlotManager;
 import net.capecraft.admin.VoidTeleport;
 import net.capecraft.commands.PluginList;
 import net.capecraft.member.MemberCommands;
@@ -26,14 +27,10 @@ public class Main extends JavaPlugin {
 		
 		//Cape
 		getCommand("cape").setExecutor(new MemberCommands(this));
-
-		//Admin Stuff
-		/*
-		 * Not enabled because not doing NBT edittings
-		 * getCommand("moveplayer").setExecutor(new MovePlayer(this));
-		 */
-
+		
+		
 		//Events
+		getServer().getPluginManager().registerEvents(new ServerSlotManager(), this);
 		getServer().getPluginManager().registerEvents(new VoidTeleport(), this);
 		getServer().getPluginManager().registerEvents(new MemberConfig(this), this);
 		getServer().getPluginManager().registerEvents(new ArmorStandProtect(this), this);
