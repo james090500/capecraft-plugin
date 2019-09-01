@@ -2,6 +2,9 @@ package net.capecraft;
 
 import net.capecraft.member.afkCheck.AfkCheck;
 import net.capecraft.member.afkCheck.IsAfkPlaceholder;
+
+import java.util.logging.Level;
+
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -41,9 +44,11 @@ public class Main extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new ArmorStandProtect(this), this);
 		getServer().getPluginManager().registerEvents(new ItemFrameProtect(this), this);
 
-		//placeholders
+		//PlaceHolderAPI
 		if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null){
 			new IsAfkPlaceholder(this).register();
+		} else {
+			getServer().getLogger().log(Level.SEVERE, "PlaceHolderAPI Not found. Placeholders will not working");
 		}
 	}
 }

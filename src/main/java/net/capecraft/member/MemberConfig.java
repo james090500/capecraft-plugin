@@ -2,6 +2,8 @@ package net.capecraft.member;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -18,6 +20,8 @@ public class MemberConfig implements Listener {
 	
 	Plugin plugin;
 	File memberFolder;
+	
+	private HashMap<String, YamlConfiguration> playerConfigs = new HashMap<>();
 	
 	private static final String alt = "alt";
 	private static final String afk = "isAfk";
@@ -73,6 +77,7 @@ public class MemberConfig implements Listener {
 		
 		userConfig = YamlConfiguration.loadConfiguration(userFile);
 		userConfig.set(line, value);
+		playerConfigs.put(uuid, userConfig);
 		try {
 			userConfig.save(userFile);				
 		} catch(IOException e) {
@@ -81,11 +86,15 @@ public class MemberConfig implements Listener {
 	}
 	
 	//Will read config depending on supplied values
-	public Object readConfig(String line, String uuid) {		
-		File userFile = new File(memberFolder, uuid + ".yml");
-		YamlConfiguration userConfig = YamlConfiguration.loadConfiguration(userFile);
-				
-		return userConfig.get(line);
+	public Object readConfig(String line, String uuid) {
+		if(playerConfigs.get(uuid) != null) {
+			return playerConfigs.get(uuid).get(line);
+		} else {
+			File userFile = new File(memberFolder, uuid + ".yml");
+			YamlConfiguration userConfig = YamlConfiguration.loadConfiguration(userFile);
+			playerConfigs.put(uuid, userConfig);
+			return userConfig.get(line);
+		}							
 	}
 	
 	//Updates user join time, check if they've surpassed 100 hours and don't have member permission
@@ -159,6 +168,7 @@ public class MemberConfig implements Listener {
 	@EventHandler
 	public void onLeave(PlayerQuitEvent event) {
 		updatePlayTime(event.getPlayer());
+		playerConfigs.remove(event.getPlayer().getUniqueId().toString());
 	}
 	
 	public void updatePlayTime(Player player) {
@@ -189,9 +199,7 @@ public class MemberConfig implements Listener {
 		boolean isAfk = Boolean.parseBoolean(readConfig(afk, uuid).toString());
 		//updates joinTime
 		updateConfig(jointime, (System.currentTimeMillis() / 1000), uuid);
-		//swaps afk state
-		isAfk = !isAfk;
 		//updates config with new isAfk state
-		updateConfig(afk, isAfk, uuid);
+		updateConfig(afk, !isAfk, uuid);
 	}
 }
