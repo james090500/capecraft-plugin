@@ -3,7 +3,6 @@ package net.capecraft;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import net.capecraft.admin.ServerSlotManager;
-import net.capecraft.admin.VoidTeleport;
 import net.capecraft.commands.PluginList;
 import net.capecraft.member.MemberCommands;
 import net.capecraft.member.MemberConfig;
@@ -28,10 +27,11 @@ public class Main extends JavaPlugin {
 		//Cape
 		getCommand("cape").setExecutor(new MemberCommands(this));
 		
+		//KeepInv Toggle
+		getCommand("keepinv").setExecutor(new PluginList(this));
 		
 		//Events
-		getServer().getPluginManager().registerEvents(new ServerSlotManager(), this);
-		getServer().getPluginManager().registerEvents(new VoidTeleport(), this);
+		getServer().getPluginManager().registerEvents(new ServerSlotManager(), this);		
 		getServer().getPluginManager().registerEvents(new MemberConfig(this), this);
 		getServer().getPluginManager().registerEvents(new ArmorStandProtect(this), this);
 		getServer().getPluginManager().registerEvents(new ItemFrameProtect(this), this);
