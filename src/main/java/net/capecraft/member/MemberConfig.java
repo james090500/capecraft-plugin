@@ -20,7 +20,7 @@ public class MemberConfig implements Listener {
 	File memberFolder;
 	
 	private static final String alt = "alt";
-	private static final String afk = "false";
+	private static final String afk = "isAfk";
 	private static final String username = "username";
 	private static final String playtime = "playtime";
 	private static final String jointime = "jointime";
@@ -63,7 +63,7 @@ public class MemberConfig implements Listener {
 			userConfig.set(playtime, 0);
 			userConfig.set(jointime, (System.currentTimeMillis() / 1000));
 			userConfig.set(username, 0);
-			userConfig.set(afk, 0);
+			userConfig.set(afk, "false");
 			try {
 				userConfig.save(userFile);				
 			} catch(IOException e) {
@@ -99,6 +99,7 @@ public class MemberConfig implements Listener {
 		updateConfig(alt, p.hasPermission("group.alt"), uuid);			
 		updateConfig(jointime, (System.currentTimeMillis() / 1000), uuid);
 		updateConfig(username, p.getName(), uuid);		
+		updateConfig(afk, "false", uuid);
 		int playTimeMin = Integer.parseInt(readConfig(playtime, uuid).toString());
 
 		if(p.hasPermission("group.alt")) {
@@ -161,27 +162,38 @@ public class MemberConfig implements Listener {
 	}
 	
 	public void updatePlayTime(Player player) {
+		//gets UUID to string
 		String uuid = player.getUniqueId().toString();
-		//Playtime in minutes
-		int playTimeMin = Integer.parseInt(readConfig(playtime, uuid).toString());
-		//Join time unix
-		int joinTimeUnix = Integer.parseInt(readConfig(jointime, uuid).toString());
-		//difference in seconds
-		int joinTimeDiff = (int) ((System.currentTimeMillis() / 1000) - joinTimeUnix);
-		//convert to minutes
-		joinTimeDiff = joinTimeDiff / 60;
-		playTimeMin = playTimeMin + joinTimeDiff;
-		
-		updateConfig(jointime, (System.currentTimeMillis() / 1000), uuid);
-		updateConfig(playtime, playTimeMin, uuid);
+		//gets isAfk from the playerdata file
+		boolean isAfk = Boolean.parseBoolean(readConfig(afk, uuid).toString());
+		if(!isAfk){
+			//Playtime in minutes
+			int playTimeMin = Integer.parseInt(readConfig(playtime, uuid).toString());
+			//Join time unix
+			int joinTimeUnix = Integer.parseInt(readConfig(jointime, uuid).toString());
+			//difference in seconds
+			int joinTimeDiff = (int) ((System.currentTimeMillis() / 1000) - joinTimeUnix);
+			//convert to minutes
+			joinTimeDiff = joinTimeDiff / 60;
+			playTimeMin = playTimeMin + joinTimeDiff;
+
+			updateConfig(jointime, (System.currentTimeMillis() / 1000), uuid);
+			updateConfig(playtime, playTimeMin, uuid);
+		}
 	}
 
 	public void setAfk(Player player) {
+		//gets UUID to string
 		String uuid = player.getUniqueId().toString();
-		boolean afk = Boolean.parseBoolean(readConfig(jointime, uuid).toString());
-		afk = !afk;
-		updateConfig(playtime, afk, uuid);
-		player.sendMessage("is afk" + afk);
+		//gets isAfk from the playerdata file
+		boolean isAfk = Boolean.parseBoolean(readConfig(afk, uuid).toString());
+		//updates joinTime
+		updateConfig(jointime, (System.currentTimeMillis() / 1000), uuid);
+		//swaps afk state
+		isAfk = !isAfk;
+		//updates config with new isAfk state
+		updateConfig(afk, isAfk, uuid);
+		player.sendMessage("is afk" + isAfk);
 	}
 	
 }

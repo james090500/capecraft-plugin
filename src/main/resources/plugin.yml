@@ -8,7 +8,9 @@ commands:
   playtime:
     description: Get your playtime
   playtimetop:
-    description: Get the top playtime 
+    description: Get the top playtime
+  afk:
+    description: go afk without updating playtime
   wild:
     description: RandomTP
   rtp:
