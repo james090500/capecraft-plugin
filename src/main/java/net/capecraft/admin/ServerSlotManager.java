@@ -22,7 +22,7 @@ public class ServerSlotManager implements Listener {
 		 List<Player> altsOnline = new ArrayList<Player>();
 		 
 		 //See if player count is 1 less than max when a player joins
-		 if (playerCount == (maxPlayerCount - 1)) {
+		 if (playerCount >= (maxPlayerCount - 1)) {
 			 //If player joining is an alt and player count 1 from full then disconnect the alt
 			 if(event.getPlayer().hasPermission("group.alt")) {
 				 event.getPlayer().kickPlayer("The server is full!\nWe've had to disconnect your alt to make place for real players");
@@ -32,11 +32,14 @@ public class ServerSlotManager implements Listener {
 			 //If player count is 1 less than max, loop through alts and add them to altsOnline
 			 Bukkit.getOnlinePlayers().stream().filter(p -> p.hasPermission("group.alt")).forEach(p -> altsOnline.add(p));
 			 
-			 //Get a random alt online and kick them
-			 Random rand = new Random();
-			 Player randomAlt = altsOnline.get(rand.nextInt(altsOnline.size()));
-			 randomAlt.kickPlayer("The server is full!\nWe've had to disconnect your alt to make place for real players");
-			 return;
+			 //If there are alts online
+			 if(altsOnline.size() > 0) {
+				 //Get a random alt online and kick them
+				 Random rand = new Random();
+				 Player randomAlt = altsOnline.get(rand.nextInt(altsOnline.size()));
+				 randomAlt.kickPlayer("The server is full!\nWe've had to disconnect your alt to make place for real players");
+				 return;
+			 }
 		 }
 	 }
 }

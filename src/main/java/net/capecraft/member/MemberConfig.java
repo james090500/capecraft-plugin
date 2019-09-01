@@ -41,8 +41,12 @@ public class MemberConfig implements Listener {
 	}
 
 	//Gets Play time by loading config and reading it
-	public int getPlayTime(String uuid) {		
-		File userFile = new File(memberFolder, uuid + ".yml");
+	public int getPlayTime(Player p) {		
+		//Update the playtime first
+		updatePlayTime(p);
+		
+		//Now return playtime
+		File userFile = new File(memberFolder, p.getUniqueId().toString() + ".yml");
 		YamlConfiguration userConfig = YamlConfiguration.loadConfiguration(userFile);
 		return userConfig.getInt(playtime);
 	}
@@ -101,48 +105,48 @@ public class MemberConfig implements Listener {
 		
 		//25 hours regular
 		if(playTimeMin >= 1500 && !p.hasPermission("group.regular")) {
-			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getName() + " permission set group.regular");
-			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getName() + " permission unset group.default");
+			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getUniqueId().toString() + " permission set group.regular");
+			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getUniqueId().toString() + " permission unset group.default");
 			Bukkit.broadcastMessage(Main.PREFIX + "§6" + p.getName() + " §rHas just earned the §r§7§lREGULAR§r rank!");
 			plugin.getServer().dispatchCommand(Bukkit.getConsoleSender(), "advancement grant " + p.getName() + " only capecraft:regular");
 		}
 		
 		//100 hours player
 		if(playTimeMin >= 6000 && !p.hasPermission("group.player")) {
-			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getName() + " permission set group.player");
-			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getName() + " permission unset group.regular");
+			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getUniqueId().toString() + " permission set group.player");
+			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getUniqueId().toString() + " permission unset group.regular");
 			Bukkit.broadcastMessage(Main.PREFIX + "§6" + p.getName() + " §rHas just earned the §r§f§lPLAYER§r rank!");
 			plugin.getServer().dispatchCommand(Bukkit.getConsoleSender(), "advancement grant " + p.getName() + " only capecraft:player");
 		}
 
 		//200 hours member
 		if(playTimeMin >= 12000 && !p.hasPermission("group.member")) {
-			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getName() + " permission set group.member");
-			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getName() + " permission unset group.player");
+			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getUniqueId().toString() + " permission set group.member");
+			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getUniqueId().toString() + " permission unset group.player");
 			Bukkit.broadcastMessage(Main.PREFIX + "§6" + p.getName() + " §rHas just earned the §r§c§lMEMBER§r rank!");
 			plugin.getServer().dispatchCommand(Bukkit.getConsoleSender(), "advancement grant " + p.getName() + " only capecraft:member");
 		}
 
 		//350hr elder
 		if(playTimeMin >= 21000 && !p.hasPermission("group.elder")) {
-			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getName() + " permission set group.elder");
-			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getName() + " permission unset group.member");
+			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getUniqueId().toString() + " permission set group.elder");
+			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getUniqueId().toString() + " permission unset group.member");
 			Bukkit.broadcastMessage(Main.PREFIX + "§6" + p.getName() + " §rHas just earned the §r§4§lELDER§r rank!");
 			plugin.getServer().dispatchCommand(Bukkit.getConsoleSender(), "advancement grant " + p.getName() + " only capecraft:elder");
 		}
 		
 		//700h Veteran
 		if(playTimeMin >= 42000 && !p.hasPermission("group.veteran")) {
-			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getName() + " permission set group.veteran");
-			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getName() + " permission unset group.elder");
+			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getUniqueId().toString() + " permission set group.veteran");
+			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getUniqueId().toString() + " permission unset group.elder");
 			Bukkit.broadcastMessage(Main.PREFIX + "§6" + p.getName() + " §rHas just earned the §r§5§lVETERAN§r rank!");
 			plugin.getServer().dispatchCommand(Bukkit.getConsoleSender(), "advancement grant " + p.getName() + " only capecraft:veteran");
 		}	
 		
 		//1000h Veteran
 		if(playTimeMin >= 60000 && !p.hasPermission("group.legend")) {
-			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getName() + " permission set group.legend");
-			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getName() + " permission unset group.veteran");
+			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getUniqueId().toString() + " permission set group.legend");
+			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getUniqueId().toString() + " permission unset group.veteran");
 			Bukkit.broadcastMessage(Main.PREFIX + "§6" + p.getName() + " §rHas just earned the §r§6§lVETERAN§r rank!");
 			plugin.getServer().dispatchCommand(Bukkit.getConsoleSender(), "advancement grant " + p.getName() + " only capecraft:legend");
 		}	

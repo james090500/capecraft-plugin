@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import net.capecraft.Main;
+import net.capecraft.member.KeepInvToggle;
 import net.capecraft.rantp.RandomTP;
 
 public class PluginList implements CommandExecutor {
@@ -18,15 +19,17 @@ public class PluginList implements CommandExecutor {
 	}
 
 	public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
-		if(commandLabel.equalsIgnoreCase("wild") || commandLabel.equalsIgnoreCase("rtp")) {
-			if(sender instanceof Player) {
+		if(sender instanceof Player) {
+			if(commandLabel.equalsIgnoreCase("wild") || commandLabel.equalsIgnoreCase("rtp")) {			
 				new RandomTP().teleportPlayer((Player) sender);
-			} else {
-				sender.sendMessage(Main.PREFIX + "You are the console");
+				return true;
+			} else if(commandLabel.equalsIgnoreCase("keepinv")) {
+				new KeepInvToggle((Player) sender);
+				return true;
 			}
-			return true;
-		}
-			
+		} else {
+			sender.sendMessage(Main.PREFIX + "You are the console");
+		}		
 		return false;
 	}
 

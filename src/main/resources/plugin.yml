@@ -15,3 +15,5 @@ commands:
     description: RandomTP
   cape:
     description: cape command
+  keepinv:
+    description: Keep inv toggle
