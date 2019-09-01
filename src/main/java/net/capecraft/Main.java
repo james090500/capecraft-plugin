@@ -1,5 +1,7 @@
 package net.capecraft;
 
+import net.capecraft.member.afkCheck.IsAfkPlaceholder;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import net.capecraft.admin.ServerSlotManager;
@@ -32,9 +34,14 @@ public class Main extends JavaPlugin {
 		getCommand("keepinv").setExecutor(new PluginList(this));
 		
 		//Events
-		getServer().getPluginManager().registerEvents(new ServerSlotManager(), this);		
+		getServer().getPluginManager().registerEvents(new ServerSlotManager(), this);
 		getServer().getPluginManager().registerEvents(new MemberConfig(this), this);
 		getServer().getPluginManager().registerEvents(new ArmorStandProtect(this), this);
 		getServer().getPluginManager().registerEvents(new ItemFrameProtect(this), this);
+
+		//placeholders
+		if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null){
+			new IsAfkPlaceholder(this).register();
+		}
 	}
 }
