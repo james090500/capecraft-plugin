@@ -39,7 +39,9 @@ public class MemberCommands implements CommandExecutor {
 
 				if (Bukkit.getPlayer(userPlaytime) != null) {
 					MemberConfig memberconfig = new MemberConfig(plugin);
-					double playtime = memberconfig.getPlayTime(Bukkit.getPlayer(userPlaytime));
+					Player p = Bukkit.getPlayer(userPlaytime);
+					memberconfig.updatePlayTime(p);
+					double playtime = memberconfig.getPlayTime(p);
 					playtime = playtime / 60;
 					DecimalFormat df = new DecimalFormat("#.##");
 					sender.sendMessage(
@@ -90,6 +92,20 @@ public class MemberCommands implements CommandExecutor {
 
 		if (commandLabel.equalsIgnoreCase("cape")) {
 			sender.sendMessage(Main.PREFIX + "To get a cape visit https://minecraftcapes.co.uk/discord");
+		}
+
+		if (commandLabel.equalsIgnoreCase("afk")) {
+			MemberConfig memberconfig = new MemberConfig(plugin);
+			if (sender instanceof Player) {
+				String playerName = sender.getName();
+				Player p = Bukkit.getPlayer(playerName);
+				memberconfig.setAfk(p);
+				return true;
+			}else{
+				sender.sendMessage("hi?");
+				return false;
+			}
+
 		}
 
 		return false;
