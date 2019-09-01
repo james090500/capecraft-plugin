@@ -1,5 +1,7 @@
 .git
 .settings
+capecraft.iml
 bin/
 .idea/
 target/
+.metadata/*
