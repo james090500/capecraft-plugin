@@ -193,7 +193,5 @@ public class MemberConfig implements Listener {
 		isAfk = !isAfk;
 		//updates config with new isAfk state
 		updateConfig(afk, isAfk, uuid);
-		player.sendMessage("is afk" + isAfk);
 	}
-	
 }

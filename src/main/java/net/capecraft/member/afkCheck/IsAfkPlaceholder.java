@@ -25,7 +25,7 @@ public class IsAfkPlaceholder extends PlaceholderExpansion {
 
     @Override
     public String getIdentifier() {
-        return "CapeCraft_afk";
+        return "CapeCraft";
     }
 
     @Override
@@ -39,11 +39,11 @@ public class IsAfkPlaceholder extends PlaceholderExpansion {
     }
 
     public String onPlaceholderRequest(Player player, String identifier) {
-        if (identifier.equals("CapeCraft_afk")) {
+        if (identifier.equals("afk")) {
             MemberConfig memberconfig = new MemberConfig(plugin);
             String uuid = player.getUniqueId().toString();
             if (Boolean.parseBoolean(memberconfig.readConfig("isAfk", uuid).toString())) {
-                return "afk";
+                return " afk";
             }
             return " ";
         }

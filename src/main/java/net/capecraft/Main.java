@@ -1,5 +1,6 @@
 package net.capecraft;
 
+import net.capecraft.member.afkCheck.AfkCheck;
 import net.capecraft.member.afkCheck.IsAfkPlaceholder;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -35,6 +36,7 @@ public class Main extends JavaPlugin {
 		
 		//Events
 		getServer().getPluginManager().registerEvents(new ServerSlotManager(), this);
+		getServer().getPluginManager().registerEvents(new AfkCheck(this), this);
 		getServer().getPluginManager().registerEvents(new MemberConfig(this), this);
 		getServer().getPluginManager().registerEvents(new ArmorStandProtect(this), this);
 		getServer().getPluginManager().registerEvents(new ItemFrameProtect(this), this);
