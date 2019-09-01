@@ -158,7 +158,7 @@ public class MemberConfig implements Listener {
 		updatePlayTime(event.getPlayer());
 	}
 	
-	private void updatePlayTime(Player player) {
+	public void updatePlayTime(Player player) {
 		String uuid = player.getUniqueId().toString();
 		//Playtime in minutes
 		int playTimeMin = Integer.parseInt(readConfig(playtime, uuid).toString());

@@ -39,7 +39,9 @@ public class MemberCommands implements CommandExecutor {
 
 				if (Bukkit.getPlayer(userPlaytime) != null) {
 					MemberConfig memberconfig = new MemberConfig(plugin);
-					double playtime = memberconfig.getPlayTime(Bukkit.getPlayer(userPlaytime));
+					Player p = Bukkit.getPlayer(userPlaytime);
+					memberconfig.updatePlayTime(p);
+					double playtime = memberconfig.getPlayTime(p);
 					playtime = playtime / 60;
 					DecimalFormat df = new DecimalFormat("#.##");
 					sender.sendMessage(
