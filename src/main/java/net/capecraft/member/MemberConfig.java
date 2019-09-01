@@ -20,10 +20,11 @@ public class MemberConfig implements Listener {
 	File memberFolder;
 	
 	private static final String alt = "alt";
+	private static final String afk = "false";
 	private static final String username = "username";
 	private static final String playtime = "playtime";
 	private static final String jointime = "jointime";
-	
+
 	public MemberConfig(Plugin p) {
 		plugin = p;
 		
@@ -62,6 +63,7 @@ public class MemberConfig implements Listener {
 			userConfig.set(playtime, 0);
 			userConfig.set(jointime, (System.currentTimeMillis() / 1000));
 			userConfig.set(username, 0);
+			userConfig.set(afk, 0);
 			try {
 				userConfig.save(userFile);				
 			} catch(IOException e) {
@@ -172,6 +174,14 @@ public class MemberConfig implements Listener {
 		
 		updateConfig(jointime, (System.currentTimeMillis() / 1000), uuid);
 		updateConfig(playtime, playTimeMin, uuid);
+	}
+
+	public void setAfk(Player player) {
+		String uuid = player.getUniqueId().toString();
+		boolean afk = Boolean.parseBoolean(readConfig(jointime, uuid).toString());
+		afk = !afk;
+		updateConfig(playtime, afk, uuid);
+		player.sendMessage("is afk" + afk);
 	}
 	
 }
