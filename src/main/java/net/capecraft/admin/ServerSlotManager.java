@@ -10,6 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerLoginEvent.Result;
 
 public class ServerSlotManager implements Listener {
 
@@ -19,17 +20,18 @@ public class ServerSlotManager implements Listener {
 		 int playerCount = Bukkit.getServer().getOnlinePlayers().size();
 		 int maxPlayerCount = Bukkit.getServer().getMaxPlayers();
 		 //Create a temp list for online alts
-		 List<Player> altsOnline = new ArrayList<Player>();
+		 List<Player> altsOnline = new ArrayList<Player>();		 		 	
 		 
 		 //See if player count is 1 less than max when a player joins
 		 if (playerCount >= (maxPlayerCount - 1)) {
-			 //If player joining is an alt and player count 1 from full then disconnect the alt
-			 if(event.getPlayer().hasPermission("group.alt")) {
-				 event.getPlayer().kickPlayer("The server is full!\nWe've had to disconnect your alt to make place for real players");
+			 			 			 
+			 //If player joining is an alt and player count 1 from full then disconnect the alt			 
+			 if(event.getPlayer().hasPermission("group.alt")) {				 
+				 event.disallow(Result.KICK_OTHER, "The server is full!\nWe've had to disconnect your alt to make place for real players");				 
 				 return;
 			 }
 			 
-			 //If player count is 1 less than max, loop through alts and add them to altsOnline
+			 //If player count is 1 less than max or more
 			 Bukkit.getOnlinePlayers().stream().filter(p -> p.hasPermission("group.alt")).forEach(p -> altsOnline.add(p));
 			 
 			 //If there are alts online
