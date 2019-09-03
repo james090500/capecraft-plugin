@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import net.capecraft.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -27,7 +28,8 @@ public class ServerSlotManager implements Listener {
 			 			 			 
 			 //If player joining is an alt and player count 1 from full then disconnect the alt			 
 			 if(event.getPlayer().hasPermission("group.alt")) {				 
-				 event.disallow(Result.KICK_OTHER, "The server is full!\nWe've had to disconnect your alt to make place for real players");				 
+				 event.disallow(Result.KICK_OTHER, "The server is full!\nWe've had to disconnect your alt to make place for real players");
+				 Bukkit.broadcastMessage(Main.PREFIX + "An alt has been denied entry! Feel safe in your active minds!");
 				 return;
 			 }
 			 
@@ -40,6 +42,7 @@ public class ServerSlotManager implements Listener {
 				 Random rand = new Random();
 				 Player randomAlt = altsOnline.get(rand.nextInt(altsOnline.size()));
 				 randomAlt.kickPlayer("The server is full!\nWe've had to disconnect your alt to make place for real players");
+				 Bukkit.broadcastMessage(Main.PREFIX + "An inactive player has been removed from the playing field to make space! Feel safe in your active minds!");
 				 return;
 			 }
 		 }
