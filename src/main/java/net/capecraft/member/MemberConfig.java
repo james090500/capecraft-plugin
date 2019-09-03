@@ -108,7 +108,7 @@ public class MemberConfig implements Listener {
 		updateConfig(alt, p.hasPermission("group.alt"), uuid);			
 		updateConfig(jointime, (System.currentTimeMillis() / 1000), uuid);
 		updateConfig(username, p.getName(), uuid);		
-		updateConfig(afk, "false", uuid);
+		updateConfig(afk, false, uuid);
 		int playTimeMin = Integer.parseInt(readConfig(playtime, uuid).toString());
 
 		if(p.hasPermission("group.alt")) {
