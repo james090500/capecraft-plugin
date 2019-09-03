@@ -3,6 +3,6 @@
 capecraft.iml
 bin/
 .idea/
-target/
 .metadata/*
 /out/*
+/target/*
