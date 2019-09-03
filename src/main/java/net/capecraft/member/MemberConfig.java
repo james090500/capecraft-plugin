@@ -171,8 +171,9 @@ public class MemberConfig implements Listener {
 	//Will update play minutes
 	@EventHandler
 	public void onLeave(PlayerQuitEvent event) {
+		//Removes player from queue when they leave to prevent npe when the server tries to kick them - mov51
 		ServerSlotManager.INSTANCE.manageAfkQueue(event.getPlayer(), "del");
-		log.warning("MemberConf removed " + event.getPlayer());
+		log.warning("MemberConf removed " + event.getPlayer());//todo remove!
 		updatePlayTime(event.getPlayer());
 		playerConfigs.remove(event.getPlayer().getUniqueId().toString());
 	}
@@ -199,22 +200,24 @@ public class MemberConfig implements Listener {
 	}
 
 	public void setAfk(Player player) {
-		//gets UUID to string
+		//gets UUID to string - mov51
 		String uuid = player.getUniqueId().toString();
-		//gets isAfk from the playerdata file
+		//gets isAfk from the playerdata file /Sets isAfk to the desired result (opposite)
 		boolean isAfk = Boolean.parseBoolean(readConfig(afk, uuid).toString());
 
+		//Checks for the opposite of afk, if true removes player if false adds them - mov51
 		if(!isAfk){
+			//If isAfk is false, adds them to the afk queue for prep
 			ServerSlotManager.INSTANCE.manageAfkQueue(player, "add");
-			log.warning("MemberConf added " + player);
-
+			log.warning("MemberConf added " + player);//todo remove
 		}else{
+			//If isAfk is true, removes them from the afk queue for prep
 			ServerSlotManager.INSTANCE.manageAfkQueue(player, "del");
-			log.warning("MemberConf removed " + player);
+			log.warning("MemberConf removed " + player);//todo remove
 		}
-			//updates joinTime
+			//updates joinTime - mov51
 			updateConfig(jointime, (System.currentTimeMillis() / 1000), uuid);
-			//updates config with new isAfk state
+			//updates config with new isAfk state (opposite of original state) - mov51
 			updateConfig(afk, !isAfk, uuid);
 		}
 
