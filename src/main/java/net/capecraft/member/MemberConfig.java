@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.UUID;
 
+import net.capecraft.admin.ServerSlotManager;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -201,5 +202,6 @@ public class MemberConfig implements Listener {
 		updateConfig(jointime, (System.currentTimeMillis() / 1000), uuid);
 		//updates config with new isAfk state
 		updateConfig(afk, !isAfk, uuid);
+		ServerSlotManager.manageAfkQueue(player, "add");
 	}
 }

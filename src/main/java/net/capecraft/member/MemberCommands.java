@@ -90,6 +90,20 @@ public class MemberCommands implements CommandExecutor {
 			});
 		}
 
+		if (commandLabel.equalsIgnoreCase("afk")) {
+			MemberConfig memberconfig = new MemberConfig(plugin);
+			if (sender instanceof Player) {
+				String playerName = sender.getName();
+				Player p = Bukkit.getPlayer(playerName);
+				memberconfig.setAfk(p);
+				return true;
+			}else{
+				sender.sendMessage("hi?");
+				return false;
+			}
+
+		}
+
 		return false;
 	}
 }
