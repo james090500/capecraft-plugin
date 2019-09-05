@@ -90,6 +90,18 @@ public class MemberCommands implements CommandExecutor {
 			});
 		}
 
+		if (commandLabel.equalsIgnoreCase("afk")) {
+			MemberConfig memberconfig = new MemberConfig(plugin);
+			if (sender instanceof Player) {
+				memberconfig.setAfk((Player) sender);
+				return true;
+			}else{
+				sender.sendMessage("hi?");
+				return false;
+			}
+
+		}
+
 		return false;
 	}
 }
