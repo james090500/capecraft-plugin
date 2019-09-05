@@ -45,8 +45,10 @@ public class IsAfkPlaceholder extends PlaceholderExpansion {
             String uuid = player.getUniqueId().toString();
             if (Boolean.parseBoolean(peh.readConfig("isAfk", uuid).toString())) {
                 return "AFK";
+            }else{
+                //You have to return something James https://i.imgur.com/uqDjCzo.png
+                return "";
             }
-            return null;
         }
         return null;
     }
