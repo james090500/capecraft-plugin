@@ -31,7 +31,7 @@ public class PluginList implements CommandExecutor {
 				sender.sendMessage(Main.PREFIX + "To get a cape visit https://minecraftcapes.co.uk/discord");
 			} else if (commandLabel.equalsIgnoreCase("afk")) {
 				MemberConfig memberconfig = new MemberConfig(plugin);									
-				memberconfig.setAfk((Player) sender);
+				memberconfig.setAfk((Player) sender);				
 				return true;
 			}			
 		} else {

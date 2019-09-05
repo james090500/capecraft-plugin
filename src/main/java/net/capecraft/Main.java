@@ -1,8 +1,5 @@
 package net.capecraft;
 
-import net.capecraft.member.afkCheck.AfkCheck;
-import net.capecraft.member.afkCheck.IsAfkPlaceholder;
-
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
@@ -12,6 +9,7 @@ import net.capecraft.admin.ServerSlotManager;
 import net.capecraft.commands.PluginList;
 import net.capecraft.member.MemberCommands;
 import net.capecraft.member.MemberConfig;
+import net.capecraft.member.afkCheck.IsAfkPlaceholder;
 import net.capecraft.protect.ArmorStandProtect;
 import net.capecraft.protect.ItemFrameProtect;
 
@@ -38,8 +36,8 @@ public class Main extends JavaPlugin {
 		getCommand("keepinv").setExecutor(new PluginList(this));
 		
 		//Events
-		getServer().getPluginManager().registerEvents(new ServerSlotManager(), this);
-		getServer().getPluginManager().registerEvents(new AfkCheck(this), this);
+		getServer().getPluginManager().registerEvents(ServerSlotManager.INSTANCE, this);
+		//getServer().getPluginManager().registerEvents(new AfkCheck(this), this);
 		getServer().getPluginManager().registerEvents(new MemberConfig(this), this);
 		getServer().getPluginManager().registerEvents(new ArmorStandProtect(this), this);
 		getServer().getPluginManager().registerEvents(new ItemFrameProtect(this), this);

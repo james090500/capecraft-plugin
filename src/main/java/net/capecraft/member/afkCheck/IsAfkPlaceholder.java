@@ -43,9 +43,9 @@ public class IsAfkPlaceholder extends PlaceholderExpansion {
             MemberConfig memberconfig = new MemberConfig(plugin);
             String uuid = player.getUniqueId().toString();
             if (Boolean.parseBoolean(memberconfig.readConfig("isAfk", uuid).toString())) {
-                return " afk";
+                return "AFK";
             }
-            return " ";
+            return null;
         }
         return null;
     }
