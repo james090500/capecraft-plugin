@@ -116,7 +116,6 @@ public class MemberConfig implements Listener {
 		int playTimeMin = Integer.parseInt(readConfig(playtime, uuid).toString());
 
 		if(p.hasPermission("group.alt")) {
-			log.warning("MemberConf added ALT " + p.getName());//todo remove
 			ServerSlotManager.INSTANCE.manageAfkQueue(p, "add");
 			return;
 		}
@@ -175,7 +174,6 @@ public class MemberConfig implements Listener {
 	public void onLeave(PlayerQuitEvent event) {
 		//Removes player from queue when they leave to prevent npe when the server tries to kick them - mov51
 		ServerSlotManager.INSTANCE.manageAfkQueue(event.getPlayer(), "del");
-		log.warning("MemberConf removed " + event.getPlayer());//todo remove!
 		updatePlayTime(event.getPlayer());
 		playerConfigs.remove(event.getPlayer().getUniqueId().toString());
 	}
@@ -210,11 +208,9 @@ public class MemberConfig implements Listener {
 		//Checks for the opposite of afk, if true removes player if false adds them - mov51
 		if(!isAfk){
 			//If isAfk is false, adds them to the afk queue for prep
-			log.warning("MemberConf added " + player.getName());//todo remove
 			ServerSlotManager.INSTANCE.manageAfkQueue(player, "add");
 		}else{
 			//If isAfk is true, removes them from the afk queue for prep
-			log.warning("MemberConf removed " + player.getName());//todo remove
 			ServerSlotManager.INSTANCE.manageAfkQueue(player, "del");
 		}
 		//updates joinTime - mov51

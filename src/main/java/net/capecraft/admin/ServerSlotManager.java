@@ -25,18 +25,11 @@ public class ServerSlotManager implements Listener {
 	 @EventHandler(priority = EventPriority.HIGHEST)
 	 public void onPlayerLoginEvent(PlayerLoginEvent event) {
 
-		 for(Player s : ServerSlotManager.INSTANCE.afkQueueList) {//TODO remove
-			 log.warning("queue is " + s.getName());//TODO remove
-		 }
-		 log.warning("queue size is " + ServerSlotManager.INSTANCE.afkQueueList.size());//TODO remove
 		 //Gets updated player size each tim a player joins - mov51
 		 int playerCount = Bukkit.getServer().getOnlinePlayers().size();
 
 		 //Simplifies afk check to 1 bool - mov51
 		 boolean doKick = (playerCount >= (maxPlayerCount - 1));
-
-		 log.warning("doKick? " + doKick); //TODO rm
-		 log.warning("Size" + ServerSlotManager.INSTANCE.afkQueueList.size()); //TODO rm
 
 		 //Checks against the queue size, doKick condition, and alt rank for alt prevention - mov51
 		 if(ServerSlotManager.INSTANCE.afkQueueList.size() > 0 && doKick && event.getPlayer().hasPermission("group.alt")) {
@@ -59,9 +52,6 @@ public class ServerSlotManager implements Listener {
 		 //Simplifies afk check to 1 bool - mov51
 		 boolean doKick = (playerCount >= (maxPlayerCount - 1));
 
-		 log.warning("doKick? " + doKick); //TODO rm
-		 log.warning("Size" + ServerSlotManager.INSTANCE.afkQueueList.size()); //TODO rm
-
 		 //Checks against the queue size and the doKick condition - mov51
 		 if(ServerSlotManager.INSTANCE.afkQueueList.size() > 0 && doKick) {
 			 //warns for a kick - mov51
@@ -76,8 +66,6 @@ public class ServerSlotManager implements Listener {
 	 	if(mode.equals("add")){
 	 		//adds player to end of queue - mov51
             ServerSlotManager.INSTANCE.afkQueueList.add(p);
-
-	 		log.warning(p.getName() + " added to the queue by SSM");//TODO remove
 			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getUniqueId().toString() + " permission set essentials.afk.kickexempt true");
 
 		}else if(mode.equals("del")){
@@ -87,8 +75,6 @@ public class ServerSlotManager implements Listener {
 				//should only ever run once!! - mov51
                 ServerSlotManager.INSTANCE.afkQueueList.remove(p);
 				Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getUniqueId().toString() + " permission set essentials.afk.kickexempt false");
-
-				log.warning(p.getName() + " removed from the queue by SSM");//TODO remove
 
 			}
 		 }
