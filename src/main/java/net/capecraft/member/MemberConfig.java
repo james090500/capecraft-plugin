@@ -116,6 +116,8 @@ public class MemberConfig implements Listener {
 		int playTimeMin = Integer.parseInt(readConfig(playtime, uuid).toString());
 
 		if(p.hasPermission("group.alt")) {
+			log.warning("MemberConf added ALT " + p.getName());//todo remove
+			ServerSlotManager.INSTANCE.manageAfkQueue(p, "add");
 			return;
 		}
 
@@ -208,17 +210,17 @@ public class MemberConfig implements Listener {
 		//Checks for the opposite of afk, if true removes player if false adds them - mov51
 		if(!isAfk){
 			//If isAfk is false, adds them to the afk queue for prep
+			log.warning("MemberConf added " + player.getName());//todo remove
 			ServerSlotManager.INSTANCE.manageAfkQueue(player, "add");
-			log.warning("MemberConf added " + player);//todo remove
 		}else{
 			//If isAfk is true, removes them from the afk queue for prep
+			log.warning("MemberConf removed " + player.getName());//todo remove
 			ServerSlotManager.INSTANCE.manageAfkQueue(player, "del");
-			log.warning("MemberConf removed " + player);//todo remove
 		}
-			//updates joinTime - mov51
-			updateConfig(jointime, (System.currentTimeMillis() / 1000), uuid);
-			//updates config with new isAfk state (opposite of original state) - mov51
-			updateConfig(afk, !isAfk, uuid);
+		//updates joinTime - mov51
+		updateConfig(jointime, (System.currentTimeMillis() / 1000), uuid);
+		//updates config with new isAfk state (opposite of original state) - mov51
+		updateConfig(afk, !isAfk, uuid);
 		}
 
 	}

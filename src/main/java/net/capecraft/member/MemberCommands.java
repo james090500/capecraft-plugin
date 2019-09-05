@@ -93,9 +93,7 @@ public class MemberCommands implements CommandExecutor {
 		if (commandLabel.equalsIgnoreCase("afk")) {
 			MemberConfig memberconfig = new MemberConfig(plugin);
 			if (sender instanceof Player) {
-				String playerName = sender.getName();
-				Player p = Bukkit.getPlayer(playerName);
-				memberconfig.setAfk(p);
+				memberconfig.setAfk((Player) sender);
 				return true;
 			}else{
 				sender.sendMessage("hi?");
