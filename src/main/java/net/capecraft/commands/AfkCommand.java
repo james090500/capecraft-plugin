@@ -19,14 +19,14 @@ public class AfkCommand implements CommandExecutor {
 	
 	public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
 		if(sender instanceof Player){
-			if(!sender.hasPermission("group.alt")) {
-				if (commandLabel.equalsIgnoreCase("afk")) {
+			if (commandLabel.equalsIgnoreCase("afk")) {
+				if(!sender.hasPermission("group.alt")) {
 					PlaytimeEventHandler peh = new PlaytimeEventHandler(plugin);
 					peh.setAfk((Player) sender);
 					return true;
+				}else{
+					sender.sendMessage(Main.PREFIX + "Your an alt! You are already afk you silly");
 				}
-			}else{
-				sender.sendMessage(Main.PREFIX + "Your an alt! You are already afk you silly");
 			}
 		}
 		return false;
