@@ -1,11 +1,10 @@
-package net.capecraft.member;
+package net.capecraft.events;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
-import net.capecraft.admin.ServerSlotManager;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -16,9 +15,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
 
 import net.capecraft.Main;
-import net.capecraft.admin.ServerSlotManager;
 
-public class MemberConfig implements Listener {
+public class PlaytimeEventHandler implements Listener {
 
 	Plugin plugin;
 	File memberFolder;
@@ -33,7 +31,7 @@ public class MemberConfig implements Listener {
 
 	public Logger log = Bukkit.getLogger();
 
-	public MemberConfig(Plugin p) {
+	public PlaytimeEventHandler(Plugin p) {
 		plugin = p;
 
 		//Makes plugin folders if they don't exist
@@ -116,7 +114,7 @@ public class MemberConfig implements Listener {
 		int playTimeMin = Integer.parseInt(readConfig(playtime, uuid).toString());
 
 		if(p.hasPermission("group.alt")) {
-			ServerSlotManager.INSTANCE.manageAfkQueue(p, "add");
+			ServerSlotManager.INSTANCE.addAfkPlayer(p);
 			return;
 		}
 
@@ -173,7 +171,7 @@ public class MemberConfig implements Listener {
 	@EventHandler
 	public void onLeave(PlayerQuitEvent event) {
 		//Removes player from queue when they leave to prevent npe when the server tries to kick them - mov51
-		ServerSlotManager.INSTANCE.manageAfkQueue(event.getPlayer(), "del");
+		ServerSlotManager.INSTANCE.removeAfkPlayer(event.getPlayer());
 		updatePlayTime(event.getPlayer());
 		playerConfigs.remove(event.getPlayer().getUniqueId().toString());
 	}
@@ -208,10 +206,10 @@ public class MemberConfig implements Listener {
 		//Checks for the opposite of afk, if true removes player if false adds them - mov51
 		if(!isAfk){
 			//If isAfk is false, adds them to the afk queue for prep
-			ServerSlotManager.INSTANCE.manageAfkQueue(player, "add");
+			ServerSlotManager.INSTANCE.addAfkPlayer(player);
 		}else{
 			//If isAfk is true, removes them from the afk queue for prep
-			ServerSlotManager.INSTANCE.manageAfkQueue(player, "del");
+			ServerSlotManager.INSTANCE.removeAfkPlayer(player);
 		}
 		//updates joinTime - mov51
 		updateConfig(jointime, (System.currentTimeMillis() / 1000), uuid);

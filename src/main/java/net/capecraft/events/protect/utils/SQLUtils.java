@@ -1,4 +1,4 @@
-package net.capecraft.protect.utils;
+package net.capecraft.events.protect.utils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 import org.bukkit.plugin.Plugin;
 
-import net.capecraft.protect.ArmorStandProtect;
+import net.capecraft.events.protect.ArmorStandProtect;
 
 public class SQLUtils {
 	   

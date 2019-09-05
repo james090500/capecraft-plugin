@@ -1,7 +1,8 @@
-package net.capecraft.member.afkCheck;
+package net.capecraft.events.afkcheck;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import net.capecraft.member.MemberConfig;
+import net.capecraft.events.PlaytimeEventHandler;
+
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -40,12 +41,12 @@ public class IsAfkPlaceholder extends PlaceholderExpansion {
 
     public String onPlaceholderRequest(Player player, String identifier) {
         if (identifier.equals("afk")) {
-            MemberConfig memberconfig = new MemberConfig(plugin);
+            PlaytimeEventHandler peh = new PlaytimeEventHandler(plugin);
             String uuid = player.getUniqueId().toString();
-            if (Boolean.parseBoolean(memberconfig.readConfig("isAfk", uuid).toString())) {
-                return " afk";
+            if (Boolean.parseBoolean(peh.readConfig("isAfk", uuid).toString())) {
+                return "AFK";
             }
-            return " ";
+            return null;
         }
         return null;
     }

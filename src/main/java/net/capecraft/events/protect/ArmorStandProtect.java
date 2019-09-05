@@ -1,4 +1,4 @@
-package net.capecraft.protect;
+package net.capecraft.events.protect;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,8 +23,8 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 
 import net.capecraft.Main;
-import net.capecraft.protect.utils.SQLUtils;
-import net.capecraft.protect.utils.Utils;
+import net.capecraft.events.protect.utils.SQLUtils;
+import net.capecraft.events.protect.utils.Utils;
 
 public class ArmorStandProtect implements Listener {
    

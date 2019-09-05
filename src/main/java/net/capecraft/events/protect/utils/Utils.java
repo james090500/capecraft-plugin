@@ -1,4 +1,4 @@
-package net.capecraft.protect.utils;
+package net.capecraft.events.protect.utils;
 
 import org.bukkit.plugin.Plugin;
 

@@ -1,23 +1,36 @@
-package net.capecraft.rantp;
+package net.capecraft.commands.rantp;
 
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import net.capecraft.Main;
-import net.capecraft.commands.CooldownManager;
 
-public class RandomTP {
+public class RandomTP implements CommandExecutor {
 	
-	private static final int MAX_X = 10000;	
-	private static final int MAX_Z = 10000;
+	private static final int MAX_X = 100000;	
+	private static final int MAX_Z = 100000;
 	
-	public void teleportPlayer(Player player) {
+	@Override
+	public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
+		if(sender instanceof Player) {
+			if(commandLabel.equalsIgnoreCase("wild") || commandLabel.equalsIgnoreCase("rtp")) {			
+				this.teleportPlayer((Player) sender);
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private void teleportPlayer(Player player) {
 		//Check if the player is past the cooldown time
 		Long timePast = System.currentTimeMillis() - CooldownManager.INSTANCE.getCooldown(player.getUniqueId());
 		int timeLeft = (int) (CooldownManager.DEFAULT_COOLDOWN - TimeUnit.MILLISECONDS.toSeconds(timePast));	
@@ -30,7 +43,7 @@ public class RandomTP {
 			
 			player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, (20 * 20), 0), true);
 			
-			player.teleport(new Location(Bukkit.getWorld("survival"), player.getLocation().getX() + RAND_X, 150, player.getLocation().getZ() + RAND_Z));
+			player.teleport(new Location(Bukkit.getWorld("survival"), RAND_X, 150, RAND_Z));
 			player.sendMessage(Main.PREFIX + "You have been teleported to the wild!");
 			CooldownManager.INSTANCE.setCooldown(player.getUniqueId(), System.currentTimeMillis());
 		} else {

@@ -1,19 +1,19 @@
 package net.capecraft;
 
-import net.capecraft.member.afkCheck.AfkCheck;
-import net.capecraft.member.afkCheck.IsAfkPlaceholder;
-
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import net.capecraft.admin.ServerSlotManager;
-import net.capecraft.commands.PluginList;
-import net.capecraft.member.MemberCommands;
-import net.capecraft.member.MemberConfig;
-import net.capecraft.protect.ArmorStandProtect;
-import net.capecraft.protect.ItemFrameProtect;
+import net.capecraft.commands.KeepInvToggle;
+import net.capecraft.commands.MemberCommands;
+import net.capecraft.commands.rantp.RandomTP;
+import net.capecraft.events.PlaytimeEventHandler;
+import net.capecraft.events.ServerSlotManager;
+import net.capecraft.events.afkcheck.AfkCheck;
+import net.capecraft.events.afkcheck.IsAfkPlaceholder;
+import net.capecraft.events.protect.ArmorStandProtect;
+import net.capecraft.events.protect.ItemFrameProtect;
 
 public class Main extends JavaPlugin {
 
@@ -23,8 +23,8 @@ public class Main extends JavaPlugin {
 	public void onEnable() {
 
 		//Wild
-		getCommand("wild").setExecutor(new PluginList(this));
-		getCommand("rtp").setExecutor(new PluginList(this));
+		getCommand("wild").setExecutor(new RandomTP());
+		getCommand("rtp").setExecutor(new RandomTP());
 
 		//Playtime
 		getCommand("playtime").setExecutor(new MemberCommands(this));
@@ -35,12 +35,12 @@ public class Main extends JavaPlugin {
 		getCommand("cape").setExecutor(new MemberCommands(this));
 		
 		//KeepInv Toggle
-		getCommand("keepinv").setExecutor(new PluginList(this));
+		getCommand("keepinv").setExecutor(new KeepInvToggle());
 		
 		//Events
 		getServer().getPluginManager().registerEvents(new ServerSlotManager(), this);
 		getServer().getPluginManager().registerEvents(new AfkCheck(this), this);
-		getServer().getPluginManager().registerEvents(new MemberConfig(this), this);
+		getServer().getPluginManager().registerEvents(new PlaytimeEventHandler(this), this);
 		getServer().getPluginManager().registerEvents(new ArmorStandProtect(this), this);
 		getServer().getPluginManager().registerEvents(new ItemFrameProtect(this), this);
 

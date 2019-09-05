@@ -1,4 +1,4 @@
-package net.capecraft.commands;
+package net.capecraft.commands.rantp;
 
 import java.util.HashMap;
 import java.util.UUID;
