@@ -2,8 +2,8 @@ package net.capecraft.admin;
 
 import java.util.*;
 import java.util.logging.Logger;
+import java.util.LinkedHashMap;
 
-import net.capecraft.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,7 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
 
-
+import net.capecraft.Main;
 
 public class ServerSlotManager implements Listener {
 	//implements the Minecraft logger
@@ -22,15 +22,14 @@ public class ServerSlotManager implements Listener {
 	//Creates afk player queue - mov51
 	private Queue<Player> afkQueueList = new LinkedList<>();
 
+	private LinkedHashMap<String, Player> afkList = new LinkedHashMap<String, Player>();
+
 	 @EventHandler(priority = EventPriority.HIGHEST)
 	 public void onPlayerLoginEvent(PlayerLoginEvent event) {
-
 		 //Gets updated player size each tim a player joins - mov51
 		 int playerCount = Bukkit.getServer().getOnlinePlayers().size();
-
 		 //Simplifies afk check to 1 bool - mov51
 		 boolean doKick = (playerCount >= (maxPlayerCount - 1));
-
 		 //Checks against the queue size, doKick condition, and alt rank for alt prevention - mov51
 		 if(ServerSlotManager.INSTANCE.afkQueueList.size() > 0 && doKick && event.getPlayer().hasPermission("group.alt")) {
 				 	//Warns for a blocked join - mov51
@@ -42,8 +41,7 @@ public class ServerSlotManager implements Listener {
 			 checkAfk();
 		 }
 
-		 }
-
+	 }
 
 	 public void checkAfk(){
 		 //Gets updated player size each tim a player joins - mov51

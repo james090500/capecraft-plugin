@@ -3,7 +3,6 @@ package net.capecraft.member;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.UUID;
 import java.util.logging.Logger;
 
 import net.capecraft.admin.ServerSlotManager;
@@ -17,6 +16,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
 
 import net.capecraft.Main;
+import net.capecraft.admin.ServerSlotManager;
 
 public class MemberConfig implements Listener {
 
@@ -111,8 +111,8 @@ public class MemberConfig implements Listener {
 
 		updateConfig(alt, p.hasPermission("group.alt"), uuid);
 		updateConfig(jointime, (System.currentTimeMillis() / 1000), uuid);
-		updateConfig(username, p.getName(), uuid);
-		updateConfig(afk, "false", uuid);
+		updateConfig(username, p.getName(), uuid);		
+		updateConfig(afk, false, uuid);
 		int playTimeMin = Integer.parseInt(readConfig(playtime, uuid).toString());
 
 		if(p.hasPermission("group.alt")) {
@@ -217,6 +217,10 @@ public class MemberConfig implements Listener {
 		updateConfig(jointime, (System.currentTimeMillis() / 1000), uuid);
 		//updates config with new isAfk state (opposite of original state) - mov51
 		updateConfig(afk, !isAfk, uuid);
+		if(isAfk) {
+			ServerSlotManager.INSTANCE.addAfkPlayer(player);
+		} else {
+			ServerSlotManager.INSTANCE.removeAfkPlayer(player);
 		}
-
 	}
+}
