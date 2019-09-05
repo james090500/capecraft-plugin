@@ -2,6 +2,8 @@ package net.capecraft;
 
 import java.util.logging.Level;
 
+import net.capecraft.commands.AfkCommand;
+import net.capecraft.commands.Capecommand;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -29,10 +31,10 @@ public class Main extends JavaPlugin {
 		//Playtime
 		getCommand("playtime").setExecutor(new MemberCommands(this));
 		getCommand("playtimetop").setExecutor(new MemberCommands(this));
-		getCommand("afk").setExecutor(new MemberCommands(this));
+		getCommand("afk").setExecutor(new AfkCommand(this));
 
 		//Cape
-		getCommand("cape").setExecutor(new MemberCommands(this));
+		getCommand("cape").setExecutor(new Capecommand());
 		
 		//KeepInv Toggle
 		getCommand("keepinv").setExecutor(new KeepInvToggle());
