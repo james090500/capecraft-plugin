@@ -6,4 +6,3 @@ bin/
 .metadata/*
 /out/*
 /target/*
-/target/
