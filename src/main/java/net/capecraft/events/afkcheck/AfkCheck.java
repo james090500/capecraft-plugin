@@ -16,14 +16,15 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 public class AfkCheck implements Listener {
 
     Plugin plugin;
+    PlaytimeEventHandler peh;
 
     public AfkCheck(Plugin plugin) {
         this.plugin = plugin;
+        this.peh = new PlaytimeEventHandler(plugin);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onPlayerMoveEvent(PlayerMoveEvent event){
-    	PlaytimeEventHandler peh = new PlaytimeEventHandler(plugin);
+    public void onPlayerMoveEvent(PlayerMoveEvent event){    	
         Player player = event.getPlayer();
         String uuid = player.getUniqueId().toString();
         if(Boolean.parseBoolean(peh.readConfig("isAfk", uuid).toString())){

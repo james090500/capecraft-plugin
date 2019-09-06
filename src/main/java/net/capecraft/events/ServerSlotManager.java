@@ -19,7 +19,10 @@ public class ServerSlotManager implements Listener {
 	//Create a player queue initialized with a linked list - mov51
 	private Queue<Player> afkQueueList = new LinkedList<>();
 
-	//Listen for player join
+	/**
+	 * Will listen for player login and pefrom slot checks
+	 * @param event
+	 */
 	@EventHandler(priority = EventPriority.HIGHEST)
 	 public void onPlayerLoginEvent(PlayerLoginEvent event) {
 		//Updates the player count with each check - mov51
@@ -39,6 +42,9 @@ public class ServerSlotManager implements Listener {
 
 	 }
 
+	/**
+	 * Will check if the anyone from the AFK queue can be kicked to allow real players
+	 */
 	 public void checkAfk(){
 		 //Updates the player count with each check - mov51
 		 int playerCount = Bukkit.getServer().getOnlinePlayers().size();
@@ -50,9 +56,13 @@ public class ServerSlotManager implements Listener {
 			 ServerSlotManager.INSTANCE.afkQueueList.poll().kickPlayer("The server is full!\nWe've had to disconnect your alt to make place for real players");
 			 //Broadcast ensuring users that the server is protecting them - mov51
 			 Bukkit.broadcastMessage(Main.PREFIX + "An inactive player has been removed from the playing field to make space! Feel safe in your active minds!");
-		 }
+		 }		 
 	 }
 	 
+	 /**
+	  * Will add a player to the AFK Kick queue
+	  * @param p The AFK Player
+	  */
 	 public void addAfkPlayer(Player p) {
 		//Adds player to the queue's singleton instance - mov51
 		 ServerSlotManager.INSTANCE.afkQueueList.add(p);
@@ -60,6 +70,10 @@ public class ServerSlotManager implements Listener {
 		 Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getUniqueId().toString() + " permission set essentials.afk.kickexempt true");
 	 }
 	 
+	 /**
+	  * Will remove a player from the AFK Kick queue
+	  * @param p The active player
+	  */
 	 public void removeAfkPlayer(Player p) {
 		 //Removes player from the queue's singleton instance - mov51
 		 ServerSlotManager.INSTANCE.afkQueueList.remove(p);
