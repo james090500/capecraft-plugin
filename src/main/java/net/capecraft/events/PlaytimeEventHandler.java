@@ -204,21 +204,16 @@ public class PlaytimeEventHandler implements Listener {
 		boolean isAfk = Boolean.parseBoolean(readConfig(afk, uuid).toString());
 
 		//Checks for the opposite of afk, if true removes player if false adds them - mov51
-		if(!isAfk){
-			//If isAfk is false, adds them to the afk queue for prep
-			ServerSlotManager.INSTANCE.addAfkPlayer(player);
-		}else{
-			//If isAfk is true, removes them from the afk queue for prep
+		if(isAfk){
+			//If isAfk is true, removes them from the afk queue
 			ServerSlotManager.INSTANCE.removeAfkPlayer(player);
+		}else{
+			//If isAfk is false, adds them to the afk queue
+			ServerSlotManager.INSTANCE.addAfkPlayer(player);
 		}
 		//updates joinTime - mov51
 		updateConfig(jointime, (System.currentTimeMillis() / 1000), uuid);
 		//updates config with new isAfk state (opposite of original state) - mov51
 		updateConfig(afk, !isAfk, uuid);
-		if(isAfk) {
-			ServerSlotManager.INSTANCE.addAfkPlayer(player);
-		} else {
-			ServerSlotManager.INSTANCE.removeAfkPlayer(player);
-		}
 	}
 }
