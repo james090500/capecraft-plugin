@@ -15,7 +15,7 @@ import net.capecraft.Main;
 
 public class ServerSlotManager implements Listener {
 	//Get the max player count on initialization - mov51
-	private int maxPlayerCount = Bukkit.getServer().getMaxPlayers();
+	public int maxPlayerCount = Bukkit.getServer().getMaxPlayers();
 	//Create a player queue initialized with a linked list - mov51
 	private Queue<Player> afkQueueList = new LinkedList<>();
 
@@ -25,8 +25,8 @@ public class ServerSlotManager implements Listener {
 		//Updates the player count with each check - mov51
 		 int playerCount = Bukkit.getServer().getOnlinePlayers().size();
 		 //Turns the kick condition into a bool - mov51
-		 boolean doKick = (playerCount >= (maxPlayerCount - 1));
-		 if(ServerSlotManager.INSTANCE.afkQueueList.size() > 0 && doKick && event.getPlayer().hasPermission("group.alt")) {
+		 boolean doKick = (playerCount >= (ServerSlotManager.INSTANCE.maxPlayerCount - 1));
+		 if(doKick && event.getPlayer().hasPermission("group.alt")) {
 		 	//Prevents alts from joining - mov51
 			 //Provide a message for alts - mov51
 			 event.disallow(Result.KICK_OTHER, "The server is full!\nWe've had to disconnect your alt to make place for real players");
@@ -43,7 +43,7 @@ public class ServerSlotManager implements Listener {
 		 //Updates the player count with each check - mov51
 		 int playerCount = Bukkit.getServer().getOnlinePlayers().size();
 		 //Turns the kick condition into a bool - mov51
-		 boolean doKick = (playerCount >= (maxPlayerCount - 1));
+		 boolean doKick = (playerCount >= (ServerSlotManager.INSTANCE.maxPlayerCount - 1));
 		 //Checks against the queue size and doKick condition - mov51
 		 if(ServerSlotManager.INSTANCE.afkQueueList.size() > 0 && doKick) {
 		 	//Kicks next player in queue (FIFO) - mov51
@@ -57,14 +57,21 @@ public class ServerSlotManager implements Listener {
 		//Adds player to the queue's singleton instance - mov51
 		 ServerSlotManager.INSTANCE.afkQueueList.add(p);
 		 //Sets the kickexempt permission to true - mov51 //TODO luckPerms integration
-		 Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getUniqueId().toString() + " permission set essentials.afk.kickexempt true");
+		 if(!p.hasPermission("group.alt")) {
+			 Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getUniqueId().toString() + " permission set essentials.afk.kickexempt");
+		 }
 	 }
 	 
 	 public void removeAfkPlayer(Player p) {
 		 //Removes player from the queue's singleton instance - mov51
 		 ServerSlotManager.INSTANCE.afkQueueList.remove(p);
 		 //Sets the kickexempt permission to false - mov51
-		 Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getUniqueId().toString() + " permission set essentials.afk.kickexempt false");
+		 if(!p.hasPermission("group.alt")){
+			 if(p.hasPermission("essentials.afk.kickexempt")){
+				 Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getUniqueId().toString() + " permission unset essentials.afk.kickexempt");
+			 }
+		 }
+
 	 }	 
 
 	 //Access singleton instance - mov51
