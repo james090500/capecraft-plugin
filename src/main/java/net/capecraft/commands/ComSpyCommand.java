@@ -14,7 +14,7 @@ public class ComSpyCommand implements CommandExecutor {
         if(commandSender instanceof Player){
             if (s.equalsIgnoreCase("comspy")) {
                 Player p = (Player) commandSender;
-                if(commandSender.hasPermission("comSpy")){
+                if(commandSender.hasPermission("capecraft.comSpy")){
                     if(ComSpy.INSTANCE.ComListener.contains(p)){
                         ComSpy.INSTANCE.removeComListener(p);
                         String msg = (ChatColor.RED + "" +  ChatColor.BOLD + "[CC] " +ChatColor.RESET + "" + ChatColor.RED + "CommandSpy disabled");
