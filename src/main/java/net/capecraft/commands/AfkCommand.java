@@ -1,6 +1,8 @@
 package net.capecraft.commands;
 
 import net.capecraft.Main;
+import net.capecraft.events.ServerSlotManager;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -22,9 +24,14 @@ public class AfkCommand implements CommandExecutor {
 			if (commandLabel.equalsIgnoreCase("afk")) {
 				if(!sender.hasPermission("group.alt")) {
 					if(sender.hasPermission("capecraft.playAfk")) {
-						PlaytimeEventHandler peh = new PlaytimeEventHandler(plugin);
-						peh.setAfk((Player) sender);
-						return true;
+						int playerCount = Bukkit.getServer().getOnlinePlayers().size();
+						if(playerCount <= (ServerSlotManager.INSTANCE.maxPlayerCount - 1)){
+							PlaytimeEventHandler peh = new PlaytimeEventHandler(plugin);
+							peh.setAfk((Player) sender);
+							return true;
+						}else{
+							sender.sendMessage(Main.PREFIX + "You cant afk! The server is too full!");
+						}
 					}else{
 						sender.sendMessage(Main.PREFIX + "You cant afk! If you think this is an error contact a staff member!");
 					}
