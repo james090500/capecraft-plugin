@@ -47,7 +47,7 @@ public class ServerSlotManager implements Listener {
 		 //Checks against the queue size and doKick condition - mov51
 		 if(ServerSlotManager.INSTANCE.afkQueueList.size() > 0 && doKick) {
 		 	//Kicks next player in queue (FIFO) - mov51
-			 ServerSlotManager.INSTANCE.afkQueueList.poll().kickPlayer("The server is full!\nWe've had to disconnect your alt to make place for real players");
+			 ServerSlotManager.INSTANCE.afkQueueList.poll().kickPlayer("The server is full!\nWe've had to disconnect your account to make place for real players");
 			 //Broadcast ensuring users that the server is protecting them - mov51
 			 Bukkit.broadcastMessage(Main.PREFIX + "An inactive player has been removed from the playing field to make space! Feel safe in your active minds!");
 		 }
