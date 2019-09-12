@@ -9,6 +9,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -37,17 +38,24 @@ public class RandomTP implements CommandExecutor {
 
 		//If player is past cooldown
 		if(TimeUnit.MILLISECONDS.toSeconds(timePast) >= CooldownManager.DEFAULT_COOLDOWN) {
-			Random rand = new Random();
-			int RAND_X = rand.nextInt(MAX_X + 1 + MAX_X) - MAX_X;
-			int RAND_Z = rand.nextInt(MAX_Z + 1 + MAX_Z) - MAX_Z;			
-			
-			player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, (20 * 20), 0), true);
-			
-			player.teleport(new Location(Bukkit.getWorld("survival"), RAND_X, 150, RAND_Z));
-			player.sendMessage(Main.PREFIX + "You have been teleported to the wild!");
-			CooldownManager.INSTANCE.setCooldown(player.getUniqueId(), System.currentTimeMillis());
-		} else {
+				if(CooldownManager.INSTANCE.getDamageEvent(player.getUniqueId())){
+					Random rand = new Random();
+					int RAND_X = rand.nextInt(MAX_X + 1 + MAX_X) - MAX_X;
+					int RAND_Z = rand.nextInt(MAX_Z + 1 + MAX_Z) - MAX_Z;
+
+					player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, (20 * 20), 0), true);
+
+					player.teleport(new Location(Bukkit.getWorld("survival"), RAND_X, 150, RAND_Z));
+					player.sendMessage(Main.PREFIX + "You have been teleported to the wild!");
+					CooldownManager.INSTANCE.setCooldown(player.getUniqueId(), System.currentTimeMillis());
+				} else {
+					player.sendMessage(Main.PREFIX + "You have taken damage, you need to be in a safe place to use this command!");
+				}
+			}else{
 			player.sendMessage(Main.PREFIX + "You'll need to wait " + timeLeft + " seconds before you can do that again.");
+
 		}
+
 	}
+
 }

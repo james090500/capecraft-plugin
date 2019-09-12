@@ -3,6 +3,8 @@ package net.capecraft;
 import java.util.logging.Level;
 
 import net.capecraft.commands.*;
+import net.capecraft.commands.rantp.CooldownManager;
+import net.capecraft.events.DamageTimer;
 import net.capecraft.events.comSpy.ComSpy;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -48,6 +50,7 @@ public class Main extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new ItemFrameProtect(this), this);
 		getServer().getPluginManager().registerEvents(new ItemFrameProtect(this), this);
 		getServer().getPluginManager().registerEvents(new ComSpy(), this);
+		getServer().getPluginManager().registerEvents(new DamageTimer(),this);
 
 		//PlaceHolderAPI
 		if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null){
