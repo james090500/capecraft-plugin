@@ -35,10 +35,8 @@ public class CooldownManager {
     public void setDamageEvent(UUID player, long time){
         if(time == 0) {
             damageEvent.remove(player);
-            log.warning(player + " removed"); //todo remove
         } else {
             damageEvent.put(player, time);
-            log.warning(player + " added with " + time); //todo remove
         }
     }
 
@@ -46,12 +44,8 @@ public class CooldownManager {
         if(damageEvent.containsKey(player)){
             long time = damageEvent.get(player);
             long timePast = System.currentTimeMillis() - time;
-            log.warning("time past is " + timePast);//todo remove
-            boolean ret = timePast > DEFAULT_COOLDOWN;
-            log.warning("return " + ret);//todo remove
             return TimeUnit.MILLISECONDS.toSeconds(timePast) > DEFAULT_COOLDOWN;
         }
-        log.warning("get pass through");//todo remove
         return true;
     }
 

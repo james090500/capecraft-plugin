@@ -17,7 +17,6 @@ public class DamageTimer implements Listener {
     public void onHit(EntityDamageEvent event){
         if (event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
-            player.sendMessage("you've been damaged!");
             CooldownManager.INSTANCE.setDamageEvent(player.getUniqueId(), System.currentTimeMillis());
 
         }
