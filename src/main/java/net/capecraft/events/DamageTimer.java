@@ -1,6 +1,6 @@
 package net.capecraft.events;
 
-import net.capecraft.commands.rantp.CooldownManager;
+import net.capecraft.commands.utils.AntiCheese;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,14 +11,13 @@ import java.util.logging.Logger;
 
 public class DamageTimer implements Listener {
 
-    private Logger log = Bukkit.getLogger();;
+    private Logger log = Bukkit.getLogger();
 
     @EventHandler
-    public void onHit(EntityDamageEvent event){
+    public void onDamage(EntityDamageEvent event){
         if (event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
-            CooldownManager.INSTANCE.setDamageEvent(player.getUniqueId(), System.currentTimeMillis());
-
+            AntiCheese.INSTANCE.setDamageEvent(player, System.currentTimeMillis());
         }
     }
 }
