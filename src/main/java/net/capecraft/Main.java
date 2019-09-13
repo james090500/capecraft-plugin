@@ -2,13 +2,11 @@ package net.capecraft;
 
 import java.util.logging.Level;
 
-import net.capecraft.commands.AfkCommand;
-import net.capecraft.commands.Capecommand;
+import net.capecraft.commands.*;
+import net.capecraft.events.comSpy.ComSpy;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import net.capecraft.commands.KeepInvToggle;
-import net.capecraft.commands.MemberCommands;
 import net.capecraft.commands.rantp.RandomTP;
 import net.capecraft.events.PlaytimeEventHandler;
 import net.capecraft.events.ServerSlotManager;
@@ -38,6 +36,9 @@ public class Main extends JavaPlugin {
 		
 		//KeepInv Toggle
 		getCommand("keepinv").setExecutor(new KeepInvToggle());
+
+		//Command spy
+		getCommand("comspy").setExecutor(new ComSpyCommand());
 		
 		//Events
 		getServer().getPluginManager().registerEvents(new ServerSlotManager(), this);
@@ -45,6 +46,8 @@ public class Main extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new PlaytimeEventHandler(this), this);
 		getServer().getPluginManager().registerEvents(new ArmorStandProtect(this), this);
 		getServer().getPluginManager().registerEvents(new ItemFrameProtect(this), this);
+		getServer().getPluginManager().registerEvents(new ItemFrameProtect(this), this);
+		getServer().getPluginManager().registerEvents(new ComSpy(), this);
 
 		//PlaceHolderAPI
 		if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null){

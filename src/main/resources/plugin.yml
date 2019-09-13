@@ -19,3 +19,5 @@ commands:
     description: cape command
   keepinv:
     description: Keep inv toggle
+  comspy:
+    description: Spy on your enemies
