@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 
 import net.capecraft.Main;
 
-public class Capecommand implements CommandExecutor {
+public class CapeCommand implements CommandExecutor {
 	
 	public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
 		if(sender instanceof Player) {

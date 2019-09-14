@@ -12,11 +12,7 @@ public class CooldownManager {
 
     //Will add the cooldown to a player or will remove the player from the cooldown.
     public void setCooldown(UUID player, long time){
-        if(time == 0) {
-            cooldowns.remove(player);
-        } else {
-            cooldowns.put(player, time);
-        }
+    	cooldowns.put(player, time);
     }
 
     //Will get the time in seconds left of the player

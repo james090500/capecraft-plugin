@@ -32,7 +32,7 @@ public class Main extends JavaPlugin {
 		getCommand("afk").setExecutor(new AfkCommand(this));
 
 		//Cape
-		getCommand("cape").setExecutor(new Capecommand());
+		getCommand("cape").setExecutor(new CapeCommand());
 		
 		//KeepInv Toggle
 		getCommand("keepinv").setExecutor(new KeepInvToggle());

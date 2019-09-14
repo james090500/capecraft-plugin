@@ -53,37 +53,45 @@ public class PlaytimeEventHandler implements Listener {
 		updatePlayTime(p);
 
 		//Now return playtime
-		File userFile = new File(memberFolder, p.getUniqueId().toString() + ".yml");
-		YamlConfiguration userConfig = YamlConfiguration.loadConfiguration(userFile);
-		return userConfig.getInt(playtime);
+		return (int) readConfig(p.getUniqueId().toString(), playtime);		
 	}
 
 
 	//Will update the config depending on line and value
 	public void updateConfig(String line, Object value, String uuid) {
-		YamlConfiguration userConfig;
 		File userFile = new File(memberFolder, uuid + ".yml");
+		
+		if(playerConfigs.get(uuid) != null) {
+			playerConfigs.get(uuid).set(line, value);
+			try {
+				playerConfigs.get(uuid).save(userFile);
+			} catch(IOException e) {
+				e.printStackTrace();
+			}
+		} else {
+			YamlConfiguration userConfig;			
 
-		if(!userFile.exists()) {
+			if(!userFile.exists()) {
+				userConfig = YamlConfiguration.loadConfiguration(userFile);
+				userConfig.set(playtime, 0);
+				userConfig.set(jointime, (System.currentTimeMillis() / 1000));
+				userConfig.set(username, 0);
+				userConfig.set(afk, "false");
+				try {
+					userConfig.save(userFile);
+				} catch(IOException e) {
+					e.printStackTrace();
+				}
+			}
+
 			userConfig = YamlConfiguration.loadConfiguration(userFile);
-			userConfig.set(playtime, 0);
-			userConfig.set(jointime, (System.currentTimeMillis() / 1000));
-			userConfig.set(username, 0);
-			userConfig.set(afk, "false");
+			userConfig.set(line, value);
+			playerConfigs.put(uuid, userConfig);
 			try {
 				userConfig.save(userFile);
 			} catch(IOException e) {
 				e.printStackTrace();
-			}
-		}
-
-		userConfig = YamlConfiguration.loadConfiguration(userFile);
-		userConfig.set(line, value);
-		playerConfigs.put(uuid, userConfig);
-		try {
-			userConfig.save(userFile);
-		} catch(IOException e) {
-			e.printStackTrace();
+			}	
 		}
 	}
 
@@ -179,9 +187,8 @@ public class PlaytimeEventHandler implements Listener {
 	public void updatePlayTime(Player player) {
 		//gets UUID to string
 		String uuid = player.getUniqueId().toString();
-		//gets isAfk from the playerdata file
-		boolean isAfk = Boolean.parseBoolean(readConfig(afk, uuid).toString());
-		if(!isAfk){
+		//gets isAfk from the playerdata file		
+		if(!Boolean.parseBoolean(readConfig(afk, uuid).toString())){
 			//Playtime in minutes
 			int playTimeMin = Integer.parseInt(readConfig(playtime, uuid).toString());
 			//Join time unix

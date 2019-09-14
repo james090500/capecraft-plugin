@@ -8,6 +8,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.Plugin;
 
 import net.capecraft.events.PlaytimeEventHandler;
+import net.capecraft.events.ServerSlotManager;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -25,9 +26,8 @@ public class AfkCheck implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerMoveEvent(PlayerMoveEvent event){    	
-        Player player = event.getPlayer();
-        String uuid = player.getUniqueId().toString();
-        if(Boolean.parseBoolean(peh.readConfig("isAfk", uuid).toString())){
+        Player player = event.getPlayer();        
+        if(ServerSlotManager.INSTANCE.afkQueueList.contains(player)){
             BaseComponent[] msg = new ComponentBuilder("Your AFK! ").color(ChatColor.RED).bold( true ).append("You don't gain playtime while AFK ").color(ChatColor.GREEN).bold( true ).append(":'( ").bold( true ).color(ChatColor.AQUA).append("Use ./afk to play normally!").color(ChatColor.GREEN).bold( true ).create();
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, msg);
         }

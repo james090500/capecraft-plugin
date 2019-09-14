@@ -17,10 +17,10 @@ public class ServerSlotManager implements Listener {
 	//Get the max player count on initialization - mov51
 	public int maxPlayerCount = Bukkit.getServer().getMaxPlayers();
 	//Create a player queue initialized with a linked list - mov51
-	private Queue<Player> afkQueueList = new LinkedList<>();
+	public Queue<Player> afkQueueList = new LinkedList<>();
 
 	/**
-	 * Will listen for player login and pefrom slot checks
+	 * Will listen for player login and perform slot checks
 	 * @param event
 	 */
 	@EventHandler(priority = EventPriority.HIGHEST)
