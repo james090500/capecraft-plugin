@@ -261,9 +261,11 @@ public class PlaytimeEventHandler implements Listener {
 		//Checks for the opposite of afk, if true removes player if false adds them - mov51
 		if(isAfk) {
 			//If isAfk is true, removes them from the afk queue
+			player.sendMessage(Main.PREFIX + "You're no longer AFK");
 			ServerSlotManager.INSTANCE.removeAfkPlayer(player);
 		} else {
 			//If isAfk is false, adds them to the afk queue
+			player.sendMessage(Main.PREFIX + "You're now AFK. Make sure to follow the AFK Rules");
 			ServerSlotManager.INSTANCE.addAfkPlayer(player);
 		}
 		//updates joinTime - mov51
