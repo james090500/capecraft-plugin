@@ -23,7 +23,7 @@ public class AfkCheck implements Listener {
         Player player = event.getPlayer();        
         //Send AFK players constant notifications when moving
         if(ServerSlotManager.INSTANCE.afkQueueList.contains(player)){
-            BaseComponent[] msg = new ComponentBuilder("Your AFK! ").color(ChatColor.RED).bold( true ).append("You don't gain playtime while AFK ").color(ChatColor.GREEN).bold( true ).append(":'( ").bold( true ).color(ChatColor.AQUA).append("Use ./afk to play normally!").color(ChatColor.GREEN).bold( true ).create();
+            BaseComponent[] msg = new ComponentBuilder("You're AFK! ").color(ChatColor.RED).bold( true ).append("You don't gain playtime while AFK ").color(ChatColor.GREEN).bold( true ).append(":'( ").bold( true ).color(ChatColor.AQUA).append("Use ./afk to play normally!").color(ChatColor.GREEN).bold( true ).create();
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, msg);
         }
     }
