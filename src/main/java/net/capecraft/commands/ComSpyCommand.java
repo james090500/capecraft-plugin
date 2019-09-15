@@ -1,12 +1,12 @@
 package net.capecraft.commands;
 
-import net.capecraft.events.PlaytimeEventHandler;
-import net.capecraft.events.comSpy.ComSpy;
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import net.capecraft.events.comSpy.ComSpy;
+import net.md_5.bungee.api.ChatColor;
 
 public class ComSpyCommand implements CommandExecutor {
 
@@ -20,15 +20,13 @@ public class ComSpyCommand implements CommandExecutor {
                 	//If player is already listening then remove them, else add them to the listener!
                     if(ComSpy.INSTANCE.ComListener.contains(p)){
                     	//remove from listening
-                        ComSpy.INSTANCE.removeComListener(p);
-                        PlaytimeEventHandler.INSTANCE.updateConfig("isSpying", "false", p.getUniqueId().toString());
+                        ComSpy.INSTANCE.removeComListener(p);                        
                         String msg = (ChatColor.RED + "" +  ChatColor.BOLD + "[CC] " +ChatColor.RESET + "" + ChatColor.RED + "CommandSpy disabled");
                         p.sendMessage(msg);
                         return true;
                     }else{
-                    	//add to listender
-                        ComSpy.INSTANCE.addComListener(p);
-                        PlaytimeEventHandler.INSTANCE.updateConfig("isSpying", "true", p.getUniqueId().toString());
+                    	//add to listener
+                        ComSpy.INSTANCE.addComListener(p);                        
                         String msg = (ChatColor.RED + "" +  ChatColor.BOLD + "[CC] " +ChatColor.RESET + "" + ChatColor.GREEN + "CommandSpy enabled");
                         p.sendMessage(msg);
                         return true;

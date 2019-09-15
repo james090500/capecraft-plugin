@@ -26,12 +26,12 @@ public class PlaytimeEventHandler implements Listener {
 	private HashMap<String, YamlConfiguration> playerConfigs = new HashMap<>();
 
 	//config enums i guess
-	private static final String alt = "alt";
-	private static final String afk = "isAfk";
-	private static final String username = "username";
-	private static final String playtime = "playtime";
-	private static final String jointime = "jointime";
-	private static final String isSpying = "isSpying";
+	public static final String alt = "alt";
+	public static final String afk = "isAfk";
+	public static final String username = "username";
+	public static final String playtime = "playtime";
+	public static final String jointime = "jointime";
+	public static final String isSpying = "isSpying";
 
 	//Instance for reduced memory load
 	public static PlaytimeEventHandler INSTANCE;
@@ -96,8 +96,7 @@ public class PlaytimeEventHandler implements Listener {
 				userConfig.set(playtime, 0);
 				userConfig.set(jointime, (System.currentTimeMillis() / 1000));
 				userConfig.set(username, 0);
-				userConfig.set(afk, "false");
-				userConfig.set(isSpying, "false");
+				userConfig.set(afk, "false");				
 				try {
 					userConfig.save(userFile);
 				} catch(IOException e) {
@@ -138,76 +137,85 @@ public class PlaytimeEventHandler implements Listener {
 	 */
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event) {
-		Player p = event.getPlayer();
+		Player player = event.getPlayer();
 
-		String uuid = p.getUniqueId().toString();
+		String uuid = player.getUniqueId().toString();
 
-		updateConfig(alt, p.hasPermission("group.alt"), uuid);
+		updateConfig(alt, player.hasPermission("grouplayer.alt"), uuid);
 		updateConfig(jointime, (System.currentTimeMillis() / 1000), uuid);
-		updateConfig(username, p.getName(), uuid);		
+		updateConfig(username, player.getName(), uuid);		
 		updateConfig(afk, false, uuid);
-		if(!p.hasPermission("capecraft.comSpy")){
-			updateConfig(isSpying, false, uuid);
+		
+		Object isStaffSpying = readConfig(isSpying, uuid);
+		if(isStaffSpying != null) {
+			if(player.hasPermission("capecraft.comspy")) {
+				if((Boolean) readConfig(isSpying, uuid)) {
+					ComSpy.INSTANCE.addComListener(player);
+				}
+			} else {
+				updateConfig(isSpying, null, uuid);
+			}
 		}
+		
 		int playTimeMin = Integer.parseInt(readConfig(playtime, uuid).toString());
 
-		if(p.hasPermission("group.alt")) {
-			ServerSlotManager.INSTANCE.addAfkPlayer(p);
+		if(player.hasPermission("group.alt")) {
+			ServerSlotManager.INSTANCE.addAfkPlayer(player);
 			return;
 		}
 
 		//ComSpy persistence
 		boolean areTheySpying = Boolean.parseBoolean(readConfig(isSpying, uuid).toString());
 		if(areTheySpying){
-			ComSpy.INSTANCE.addComListener(p);
+			ComSpy.INSTANCE.addComListener(player);
 		}
 
 		//25 hours regular
-		if(playTimeMin >= 1500 && !p.hasPermission("group.regular")) {
-			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getUniqueId().toString() + " permission set group.regular");
-			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getUniqueId().toString() + " permission unset group.default");
-			Bukkit.broadcastMessage(Main.PREFIX + "§6" + p.getName() + " §rHas just earned the §r§7§lREGULAR§r rank!");
-			plugin.getServer().dispatchCommand(Bukkit.getConsoleSender(), "advancement grant " + p.getName() + " only capecraft:regular");
+		if(playTimeMin >= 1500 && !player.hasPermission("group.regular")) {
+			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + player.getUniqueId().toString() + " permission set group.regular");
+			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + player.getUniqueId().toString() + " permission unset group.default");
+			Bukkit.broadcastMessage(Main.PREFIX + "§6" + player.getName() + " §rHas just earned the §r§7§lREGULAR§r rank!");
+			plugin.getServer().dispatchCommand(Bukkit.getConsoleSender(), "advancement grant " + player.getName() + " only capecraft:regular");
 		}
 
 		//100 hours player
-		if(playTimeMin >= 6000 && !p.hasPermission("group.player")) {
-			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getUniqueId().toString() + " permission set group.player");
-			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getUniqueId().toString() + " permission unset group.regular");
-			Bukkit.broadcastMessage(Main.PREFIX + "§6" + p.getName() + " §rHas just earned the §r§f§lPLAYER§r rank!");
-			plugin.getServer().dispatchCommand(Bukkit.getConsoleSender(), "advancement grant " + p.getName() + " only capecraft:player");
+		if(playTimeMin >= 6000 && !player.hasPermission("group.player")) {
+			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + player.getUniqueId().toString() + " permission set group.player");
+			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + player.getUniqueId().toString() + " permission unset group.regular");
+			Bukkit.broadcastMessage(Main.PREFIX + "§6" + player.getName() + " §rHas just earned the §r§f§lPLAYER§r rank!");
+			plugin.getServer().dispatchCommand(Bukkit.getConsoleSender(), "advancement grant " + player.getName() + " only capecraft:player");
 		}
 
 		//200 hours member
-		if(playTimeMin >= 12000 && !p.hasPermission("group.member")) {
-			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getUniqueId().toString() + " permission set group.member");
-			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getUniqueId().toString() + " permission unset group.player");
-			Bukkit.broadcastMessage(Main.PREFIX + "§6" + p.getName() + " §rHas just earned the §r§c§lMEMBER§r rank!");
-			plugin.getServer().dispatchCommand(Bukkit.getConsoleSender(), "advancement grant " + p.getName() + " only capecraft:member");
+		if(playTimeMin >= 12000 && !player.hasPermission("group.member")) {
+			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + player.getUniqueId().toString() + " permission set group.member");
+			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + player.getUniqueId().toString() + " permission unset group.player");
+			Bukkit.broadcastMessage(Main.PREFIX + "§6" + player.getName() + " §rHas just earned the §r§c§lMEMBER§r rank!");
+			plugin.getServer().dispatchCommand(Bukkit.getConsoleSender(), "advancement grant " + player.getName() + " only capecraft:member");
 		}
 
 		//350hr elder
-		if(playTimeMin >= 21000 && !p.hasPermission("group.elder")) {
-			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getUniqueId().toString() + " permission set group.elder");
-			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getUniqueId().toString() + " permission unset group.member");
-			Bukkit.broadcastMessage(Main.PREFIX + "§6" + p.getName() + " §rHas just earned the §r§4§lELDER§r rank!");
-			plugin.getServer().dispatchCommand(Bukkit.getConsoleSender(), "advancement grant " + p.getName() + " only capecraft:elder");
+		if(playTimeMin >= 21000 && !player.hasPermission("group.elder")) {
+			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + player.getUniqueId().toString() + " permission set group.elder");
+			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + player.getUniqueId().toString() + " permission unset group.member");
+			Bukkit.broadcastMessage(Main.PREFIX + "§6" + player.getName() + " §rHas just earned the §r§4§lELDER§r rank!");
+			plugin.getServer().dispatchCommand(Bukkit.getConsoleSender(), "advancement grant " + player.getName() + " only capecraft:elder");
 		}
 
 		//700h Veteran
-		if(playTimeMin >= 42000 && !p.hasPermission("group.veteran")) {
-			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getUniqueId().toString() + " permission set group.veteran");
-			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getUniqueId().toString() + " permission unset group.elder");
-			Bukkit.broadcastMessage(Main.PREFIX + "§6" + p.getName() + " §rHas just earned the §r§5§lVETERAN§r rank!");
-			plugin.getServer().dispatchCommand(Bukkit.getConsoleSender(), "advancement grant " + p.getName() + " only capecraft:veteran");
+		if(playTimeMin >= 42000 && !player.hasPermission("group.veteran")) {
+			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + player.getUniqueId().toString() + " permission set group.veteran");
+			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + player.getUniqueId().toString() + " permission unset group.elder");
+			Bukkit.broadcastMessage(Main.PREFIX + "§6" + player.getName() + " §rHas just earned the §r§5§lVETERAN§r rank!");
+			plugin.getServer().dispatchCommand(Bukkit.getConsoleSender(), "advancement grant " + player.getName() + " only capecraft:veteran");
 		}
 
 		//1000h Legend
-		if(playTimeMin >= 60000 && !p.hasPermission("group.legend")) {
-			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getUniqueId().toString() + " permission set group.legend");
-			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getUniqueId().toString() + " permission unset group.veteran");
-			Bukkit.broadcastMessage(Main.PREFIX + "§6" + p.getName() + " §rHas just earned the §r§e§lLEGEND§r rank!");
-			plugin.getServer().dispatchCommand(Bukkit.getConsoleSender(), "advancement grant " + p.getName() + " only capecraft:legend");
+		if(playTimeMin >= 60000 && !player.hasPermission("group.legend")) {
+			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + player.getUniqueId().toString() + " permission set group.legend");
+			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + player.getUniqueId().toString() + " permission unset group.veteran");
+			Bukkit.broadcastMessage(Main.PREFIX + "§6" + player.getName() + " §rHas just earned the §r§e§lLEGEND§r rank!");
+			plugin.getServer().dispatchCommand(Bukkit.getConsoleSender(), "advancement grant " + player.getName() + " only capecraft:legend");
 		}
 	}
 

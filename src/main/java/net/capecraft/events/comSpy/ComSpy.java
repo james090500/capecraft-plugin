@@ -9,6 +9,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
+import net.capecraft.events.PlaytimeEventHandler;
 import net.md_5.bungee.api.ChatColor;
 
 public class ComSpy implements Listener {
@@ -46,6 +47,7 @@ public class ComSpy implements Listener {
     public void addComListener(Player player) {
         //Adds player to the queue's singleton instance - mov51
         ComSpy.INSTANCE.ComListener.add(player);
+        PlaytimeEventHandler.INSTANCE.updateConfig(PlaytimeEventHandler.isSpying, true, player.getUniqueId().toString());
     }
 
     /**
@@ -55,6 +57,7 @@ public class ComSpy implements Listener {
     public void removeComListener(Player player) {
         //Removes player from the queue's singleton instance - mov51
         ComSpy.INSTANCE.ComListener.remove(player);
+        PlaytimeEventHandler.INSTANCE.updateConfig(PlaytimeEventHandler.isSpying, false, player.getUniqueId().toString());
     }
 }
 
