@@ -163,13 +163,7 @@ public class PlaytimeEventHandler implements Listener {
 			ServerSlotManager.INSTANCE.addAfkPlayer(player);
 			return;
 		}
-
-		//ComSpy persistence
-		boolean areTheySpying = Boolean.parseBoolean(readConfig(isSpying, uuid).toString());
-		if(areTheySpying){
-			ComSpy.INSTANCE.addComListener(player);
-		}
-
+		
 		//25 hours regular
 		if(playTimeMin >= 1500 && !player.hasPermission("group.regular")) {
 			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + player.getUniqueId().toString() + " permission set group.regular");
