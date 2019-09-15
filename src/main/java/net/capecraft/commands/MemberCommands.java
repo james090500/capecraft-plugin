@@ -40,6 +40,11 @@ public class MemberCommands implements CommandExecutor {
 		return false;
 	}
 		
+	/**
+	 * Gets the users playtime when command is run
+	 * @param sender
+	 * @param args
+	 */
 	private void getPlaytimeMessage(CommandSender sender, String[] args) {
 		String userPlaytime = (args.length != 0 && !args[0].isEmpty()) ? args[0] : sender.getName();		
 
@@ -61,7 +66,11 @@ public class MemberCommands implements CommandExecutor {
 		}
 	}
 
-	
+	/**
+	 * Get top playtime contenders!
+	 * Needs re-doing
+	 * @param sender
+	 */
 	private void getTopPlaytime(CommandSender sender) {
 		HashMap<Integer, String> playtimes = new HashMap<Integer, String>();
 		Player p = (Player) sender;

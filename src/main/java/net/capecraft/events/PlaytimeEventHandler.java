@@ -3,9 +3,7 @@ package net.capecraft.events;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.logging.Logger;
 
-import net.capecraft.events.comSpy.ComSpy;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -16,14 +14,18 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
 
 import net.capecraft.Main;
+import net.capecraft.events.comSpy.ComSpy;
 
 public class PlaytimeEventHandler implements Listener {
 
+	//Some key variables
 	Plugin plugin;
 	File memberFolder;
 
+	//Config loaded in memory to reduce IO
 	private HashMap<String, YamlConfiguration> playerConfigs = new HashMap<>();
 
+	//config enums i guess
 	private static final String alt = "alt";
 	private static final String afk = "isAfk";
 	private static final String username = "username";
@@ -31,10 +33,13 @@ public class PlaytimeEventHandler implements Listener {
 	private static final String jointime = "jointime";
 	private static final String isSpying = "isSpying";
 
-	public Logger log = Bukkit.getLogger();
-
+	//Instance for reduced memory load
 	public static PlaytimeEventHandler INSTANCE;
 
+	/**
+	 * Constructor, sets basic variables such as folders and the instance
+	 * @param p
+	 */
 	public PlaytimeEventHandler(Plugin p) {
 		plugin = p;
 
@@ -53,7 +58,11 @@ public class PlaytimeEventHandler implements Listener {
 		
 	}
 
-	//Gets Play time by loading config and reading it
+	/**
+	 * Returns a users play time
+	 * @param p
+	 * @return
+	 */
 	public int getPlayTime(Player p) {
 		//Update the playtime first
 		updatePlayTime(p);
@@ -63,7 +72,12 @@ public class PlaytimeEventHandler implements Listener {
 	}
 
 
-	//Will update the config depending on line and value
+	/**
+	 * Updates the config in memory and saves to IO
+	 * @param line
+	 * @param value
+	 * @param uuid
+	 */
 	public void updateConfig(String line, Object value, String uuid) {
 		File userFile = new File(memberFolder, uuid + ".yml");
 		
@@ -102,7 +116,12 @@ public class PlaytimeEventHandler implements Listener {
 		}
 	}
 
-	//Will read config depending on supplied values
+	/**
+	 * Read config in to memory if not already loaded. Else it will read from memory
+	 * @param line
+	 * @param uuid
+	 * @return
+	 */
 	public Object readConfig(String line, String uuid) {		
 		if(playerConfigs.get(uuid) != null) {			
 			return playerConfigs.get(uuid).get(line);			
@@ -114,8 +133,10 @@ public class PlaytimeEventHandler implements Listener {
 		}
 	}
 
-	//Updates user join time, check if they've surpassed 100 hours and don't have member permission
-	//and will give them member
+	/**
+	 * Resets configs to normal. Add alts to queues. And gives playtime ranks
+	 * @param event
+	 */
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event) {
 		Player p = event.getPlayer();
@@ -182,7 +203,7 @@ public class PlaytimeEventHandler implements Listener {
 			plugin.getServer().dispatchCommand(Bukkit.getConsoleSender(), "advancement grant " + p.getName() + " only capecraft:veteran");
 		}
 
-		//1000h Veteran
+		//1000h Legend
 		if(playTimeMin >= 60000 && !p.hasPermission("group.legend")) {
 			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getUniqueId().toString() + " permission set group.legend");
 			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getUniqueId().toString() + " permission unset group.veteran");
@@ -191,7 +212,10 @@ public class PlaytimeEventHandler implements Listener {
 		}
 	}
 
-	//Will update play minutes
+	/**
+	 * Updates player config and removes from memory on leave
+	 * @param event
+	 */
 	@EventHandler
 	public void onLeave(PlayerQuitEvent event) {
 		//Removes player from queue when they leave to prevent npe when the server tries to kick them - mov51
@@ -200,6 +224,10 @@ public class PlaytimeEventHandler implements Listener {
 		playerConfigs.remove(event.getPlayer().getUniqueId().toString());
 	}
 
+	/**
+	 * Updates the play time
+	 * @param player
+	 */
 	public void updatePlayTime(Player player) {
 		//gets UUID to string
 		String uuid = player.getUniqueId().toString();
@@ -220,6 +248,10 @@ public class PlaytimeEventHandler implements Listener {
 		}
 	}
 
+	/**
+	 * Sets player AFK and updates config
+	 * @param player
+	 */
 	public void setAfk(Player player) {
 		//gets UUID to string - mov51
 		String uuid = player.getUniqueId().toString();

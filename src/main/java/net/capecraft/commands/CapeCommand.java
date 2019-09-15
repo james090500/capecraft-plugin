@@ -9,9 +9,11 @@ import net.capecraft.Main;
 
 public class CapeCommand implements CommandExecutor {
 	
+	@Override
 	public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
-		if(sender instanceof Player) {
+		if(sender instanceof Player) {			
 			if (commandLabel.equalsIgnoreCase("cape")) {
+				//Sends the cape message
 				sender.sendMessage(Main.PREFIX + "To get a cape visit https://minecraftcapes.co.uk/discord");
 			}
 		}

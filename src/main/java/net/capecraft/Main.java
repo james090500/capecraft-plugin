@@ -31,7 +31,7 @@ public class Main extends JavaPlugin {
 		//Playtime
 		getCommand("playtime").setExecutor(new MemberCommands(this));
 		getCommand("playtimetop").setExecutor(new MemberCommands(this));
-		getCommand("afk").setExecutor(new AfkCommand(this));
+		getCommand("afk").setExecutor(new AfkCommand());
 
 		//Cape
 		getCommand("cape").setExecutor(new CapeCommand());
@@ -49,7 +49,7 @@ public class Main extends JavaPlugin {
 		
 		//Events
 		getServer().getPluginManager().registerEvents(new ServerSlotManager(), this);
-		getServer().getPluginManager().registerEvents(new AfkCheck(this), this);
+		getServer().getPluginManager().registerEvents(new AfkCheck(), this);
 		getServer().getPluginManager().registerEvents(new PlaytimeEventHandler(this), this);
 		getServer().getPluginManager().registerEvents(new ArmorStandProtect(this), this);
 		getServer().getPluginManager().registerEvents(new ItemFrameProtect(this), this);

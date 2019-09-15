@@ -9,11 +9,15 @@ import net.capecraft.commands.utils.AntiCheese;
 
 public class DamageTimer implements Listener {
 
+	/**
+	 * On Damage puts players in combat
+	 * @param event
+	 */
     @EventHandler
     public void onDamage(EntityDamageEvent event){
-        if (event.getEntity() instanceof Player) {
-            Player player = (Player) event.getEntity();
-            AntiCheese.INSTANCE.setDamageEvent(player, System.currentTimeMillis());
+        if (event.getEntity() instanceof Player) {            
+        	//Puts player in combat mode for 5 seconds
+            AntiCheese.INSTANCE.setDamageEvent((Player) event.getEntity(), 5);
         }
     }
 }
