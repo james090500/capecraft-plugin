@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
+import net.capecraft.events.comSpy.ComSpy;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -28,6 +29,7 @@ public class PlaytimeEventHandler implements Listener {
 	private static final String username = "username";
 	private static final String playtime = "playtime";
 	private static final String jointime = "jointime";
+	private static final String isSpying = "isSpying";
 
 	public Logger log = Bukkit.getLogger();
 
@@ -81,6 +83,7 @@ public class PlaytimeEventHandler implements Listener {
 				userConfig.set(jointime, (System.currentTimeMillis() / 1000));
 				userConfig.set(username, 0);
 				userConfig.set(afk, "false");
+				userConfig.set(isSpying, "false");
 				try {
 					userConfig.save(userFile);
 				} catch(IOException e) {
@@ -123,11 +126,20 @@ public class PlaytimeEventHandler implements Listener {
 		updateConfig(jointime, (System.currentTimeMillis() / 1000), uuid);
 		updateConfig(username, p.getName(), uuid);		
 		updateConfig(afk, false, uuid);
+		if(!p.hasPermission("capecraft.comSpy")){
+			updateConfig(isSpying, false, uuid);
+		}
 		int playTimeMin = Integer.parseInt(readConfig(playtime, uuid).toString());
 
 		if(p.hasPermission("group.alt")) {
 			ServerSlotManager.INSTANCE.addAfkPlayer(p);
 			return;
+		}
+
+		//ComSpy persistence
+		boolean areTheySpying = Boolean.parseBoolean(readConfig(isSpying, uuid).toString());
+		if(areTheySpying){
+			ComSpy.INSTANCE.addComListener(p);
 		}
 
 		//25 hours regular

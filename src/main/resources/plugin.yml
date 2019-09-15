@@ -20,10 +20,10 @@ commands:
   keepinv:
     description: Keep inv toggle
   comspy:
-    description: Spy on your enemies
+   description: Spy on your enemies
   rules:
-  	description: Show the rules
+    description: Show the rules
   altrules:
-  	description: Show alt the rules
+    description: Show alt the rules
   afkrules:
-  	description: Show afk the rules
+    description: Show afk the rules

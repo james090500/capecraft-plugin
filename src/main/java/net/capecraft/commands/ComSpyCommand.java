@@ -1,5 +1,6 @@
 package net.capecraft.commands;
 
+import net.capecraft.events.PlaytimeEventHandler;
 import net.capecraft.events.comSpy.ComSpy;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.Command;
@@ -17,11 +18,13 @@ public class ComSpyCommand implements CommandExecutor {
                 if(commandSender.hasPermission("capecraft.comSpy")){
                     if(ComSpy.INSTANCE.ComListener.contains(p)){
                         ComSpy.INSTANCE.removeComListener(p);
+                        PlaytimeEventHandler.INSTANCE.updateConfig("isSpying", "false", p.getUniqueId().toString());
                         String msg = (ChatColor.RED + "" +  ChatColor.BOLD + "[CC] " +ChatColor.RESET + "" + ChatColor.RED + "CommandSpy disabled");
                         p.sendMessage(msg);
                         return true;
                     }else{
                         ComSpy.INSTANCE.addComListener(p);
+                        PlaytimeEventHandler.INSTANCE.updateConfig("isSpying", "true", p.getUniqueId().toString());
                         String msg = (ChatColor.RED + "" +  ChatColor.BOLD + "[CC] " +ChatColor.RESET + "" + ChatColor.GREEN + "CommandSpy enabled");
                         p.sendMessage(msg);
                         return true;
