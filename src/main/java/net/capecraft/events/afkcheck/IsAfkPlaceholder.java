@@ -1,10 +1,10 @@
 package net.capecraft.events.afkcheck;
 
-import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import net.capecraft.events.PlaytimeEventHandler;
-
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+
+import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+import net.capecraft.events.ServerSlotManager;
 
 public class IsAfkPlaceholder extends PlaceholderExpansion {
 
@@ -40,10 +40,8 @@ public class IsAfkPlaceholder extends PlaceholderExpansion {
     }
 
     public String onPlaceholderRequest(Player player, String identifier) {
-        if (identifier.equals("afk")) {
-            PlaytimeEventHandler peh = new PlaytimeEventHandler(plugin);
-            String uuid = player.getUniqueId().toString();
-            if (Boolean.parseBoolean(peh.readConfig("isAfk", uuid).toString())) {
+        if (identifier.equals("afk")) {            
+            if (ServerSlotManager.INSTANCE.afkQueueList.contains(player)) {
                 return "AFK";
             }else{
                 //You have to return something James https://i.imgur.com/uqDjCzo.png

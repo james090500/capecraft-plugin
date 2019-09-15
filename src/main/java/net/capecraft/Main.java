@@ -40,6 +40,11 @@ public class Main extends JavaPlugin {
 		//Command spy
 		getCommand("comspy").setExecutor(new ComSpyCommand());
 		
+		//Rules
+		getCommand("rules").setExecutor(new RuleCommands());
+		getCommand("altrules").setExecutor(new RuleCommands());
+		getCommand("afkrules").setExecutor(new RuleCommands());
+		
 		//Events
 		getServer().getPluginManager().registerEvents(new ServerSlotManager(), this);
 		getServer().getPluginManager().registerEvents(new AfkCheck(this), this);

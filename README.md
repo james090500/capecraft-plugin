@@ -11,3 +11,6 @@ This the plugin for the 1.14.4 CapeCraft server
 * /cape - Shows MinecraftCapes discord
 * /keepinv - Toggles KeepInventory
 * /comspy - ComSpy for admins to watch dommands
+* /rules - Show rules link
+* /afkrules - Show afk rules link
+* /altrules - Show alt rules link

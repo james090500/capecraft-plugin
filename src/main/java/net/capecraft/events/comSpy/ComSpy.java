@@ -23,8 +23,10 @@ public class ComSpy implements Listener {
 
         String msg = (ChatColor.RED + "" +  ChatColor.BOLD + "[CC] " +ChatColor.RESET + "" + ChatColor.YELLOW + name + ": " + command);
         for (Player p : ComSpy.INSTANCE.ComListener){
-            p.sendMessage(msg);
-    }
+        	if(sender != p) {
+        		p.sendMessage(msg);
+        	}
+        }
     }
 
     public void addComListener(Player p) {

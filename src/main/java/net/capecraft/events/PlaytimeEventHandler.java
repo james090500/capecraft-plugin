@@ -31,6 +31,8 @@ public class PlaytimeEventHandler implements Listener {
 
 	public Logger log = Bukkit.getLogger();
 
+	public static PlaytimeEventHandler INSTANCE;
+
 	public PlaytimeEventHandler(Plugin p) {
 		plugin = p;
 
@@ -45,6 +47,8 @@ public class PlaytimeEventHandler implements Listener {
 			memberFolder.mkdir();
 		}
 
+		INSTANCE = this;
+		
 	}
 
 	//Gets Play time by loading config and reading it
@@ -52,8 +56,8 @@ public class PlaytimeEventHandler implements Listener {
 		//Update the playtime first
 		updatePlayTime(p);
 
-		//Now return playtime
-		return (int) readConfig(p.getUniqueId().toString(), playtime);		
+		//Now return playtime		
+		return (int) readConfig(playtime, p.getUniqueId().toString());		
 	}
 
 
@@ -96,10 +100,10 @@ public class PlaytimeEventHandler implements Listener {
 	}
 
 	//Will read config depending on supplied values
-	public Object readConfig(String line, String uuid) {
-		if(playerConfigs.get(uuid) != null) {
-			return playerConfigs.get(uuid).get(line);
-		} else {
+	public Object readConfig(String line, String uuid) {		
+		if(playerConfigs.get(uuid) != null) {			
+			return playerConfigs.get(uuid).get(line);			
+		} else {			
 			File userFile = new File(memberFolder, uuid + ".yml");
 			YamlConfiguration userConfig = YamlConfiguration.loadConfiguration(userFile);
 			playerConfigs.put(uuid, userConfig);

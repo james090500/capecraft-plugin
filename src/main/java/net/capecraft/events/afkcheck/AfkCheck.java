@@ -7,7 +7,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.Plugin;
 
-import net.capecraft.events.PlaytimeEventHandler;
 import net.capecraft.events.ServerSlotManager;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
@@ -17,11 +16,9 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 public class AfkCheck implements Listener {
 
     Plugin plugin;
-    PlaytimeEventHandler peh;
 
     public AfkCheck(Plugin plugin) {
-        this.plugin = plugin;
-        this.peh = new PlaytimeEventHandler(plugin);
+        this.plugin = plugin;        
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

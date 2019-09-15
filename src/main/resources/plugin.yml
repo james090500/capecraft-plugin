@@ -21,3 +21,9 @@ commands:
     description: Keep inv toggle
   comspy:
     description: Spy on your enemies
+  rules:
+  	description: Show the rules
+  altrules:
+  	description: Show alt the rules
+  afkrules:
+  	description: Show afk the rules
