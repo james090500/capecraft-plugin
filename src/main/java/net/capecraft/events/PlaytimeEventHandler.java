@@ -31,6 +31,8 @@ public class PlaytimeEventHandler implements Listener {
 
 	public Logger log = Bukkit.getLogger();
 
+	public static PlaytimeEventHandler INSTANCE;
+
 	public PlaytimeEventHandler(Plugin p) {
 		plugin = p;
 
@@ -45,6 +47,8 @@ public class PlaytimeEventHandler implements Listener {
 			memberFolder.mkdir();
 		}
 
+		INSTANCE = this;
+		
 	}
 
 	//Gets Play time by loading config and reading it
@@ -52,46 +56,54 @@ public class PlaytimeEventHandler implements Listener {
 		//Update the playtime first
 		updatePlayTime(p);
 
-		//Now return playtime
-		File userFile = new File(memberFolder, p.getUniqueId().toString() + ".yml");
-		YamlConfiguration userConfig = YamlConfiguration.loadConfiguration(userFile);
-		return userConfig.getInt(playtime);
+		//Now return playtime		
+		return (int) readConfig(playtime, p.getUniqueId().toString());		
 	}
 
 
 	//Will update the config depending on line and value
 	public void updateConfig(String line, Object value, String uuid) {
-		YamlConfiguration userConfig;
 		File userFile = new File(memberFolder, uuid + ".yml");
+		
+		if(playerConfigs.get(uuid) != null) {
+			playerConfigs.get(uuid).set(line, value);
+			try {
+				playerConfigs.get(uuid).save(userFile);
+			} catch(IOException e) {
+				e.printStackTrace();
+			}
+		} else {
+			YamlConfiguration userConfig;			
 
-		if(!userFile.exists()) {
+			if(!userFile.exists()) {
+				userConfig = YamlConfiguration.loadConfiguration(userFile);
+				userConfig.set(playtime, 0);
+				userConfig.set(jointime, (System.currentTimeMillis() / 1000));
+				userConfig.set(username, 0);
+				userConfig.set(afk, "false");
+				try {
+					userConfig.save(userFile);
+				} catch(IOException e) {
+					e.printStackTrace();
+				}
+			}
+
 			userConfig = YamlConfiguration.loadConfiguration(userFile);
-			userConfig.set(playtime, 0);
-			userConfig.set(jointime, (System.currentTimeMillis() / 1000));
-			userConfig.set(username, 0);
-			userConfig.set(afk, "false");
+			userConfig.set(line, value);
+			playerConfigs.put(uuid, userConfig);
 			try {
 				userConfig.save(userFile);
 			} catch(IOException e) {
 				e.printStackTrace();
-			}
-		}
-
-		userConfig = YamlConfiguration.loadConfiguration(userFile);
-		userConfig.set(line, value);
-		playerConfigs.put(uuid, userConfig);
-		try {
-			userConfig.save(userFile);
-		} catch(IOException e) {
-			e.printStackTrace();
+			}	
 		}
 	}
 
 	//Will read config depending on supplied values
-	public Object readConfig(String line, String uuid) {
-		if(playerConfigs.get(uuid) != null) {
-			return playerConfigs.get(uuid).get(line);
-		} else {
+	public Object readConfig(String line, String uuid) {		
+		if(playerConfigs.get(uuid) != null) {			
+			return playerConfigs.get(uuid).get(line);			
+		} else {			
 			File userFile = new File(memberFolder, uuid + ".yml");
 			YamlConfiguration userConfig = YamlConfiguration.loadConfiguration(userFile);
 			playerConfigs.put(uuid, userConfig);
@@ -179,9 +191,8 @@ public class PlaytimeEventHandler implements Listener {
 	public void updatePlayTime(Player player) {
 		//gets UUID to string
 		String uuid = player.getUniqueId().toString();
-		//gets isAfk from the playerdata file
-		boolean isAfk = Boolean.parseBoolean(readConfig(afk, uuid).toString());
-		if(!isAfk){
+		//gets isAfk from the playerdata file		
+		if(!Boolean.parseBoolean(readConfig(afk, uuid).toString())){
 			//Playtime in minutes
 			int playTimeMin = Integer.parseInt(readConfig(playtime, uuid).toString());
 			//Join time unix
@@ -204,10 +215,10 @@ public class PlaytimeEventHandler implements Listener {
 		boolean isAfk = Boolean.parseBoolean(readConfig(afk, uuid).toString());
 
 		//Checks for the opposite of afk, if true removes player if false adds them - mov51
-		if(isAfk){
+		if(isAfk) {
 			//If isAfk is true, removes them from the afk queue
 			ServerSlotManager.INSTANCE.removeAfkPlayer(player);
-		}else{
+		} else {
 			//If isAfk is false, adds them to the afk queue
 			ServerSlotManager.INSTANCE.addAfkPlayer(player);
 		}

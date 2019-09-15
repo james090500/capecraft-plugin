@@ -45,13 +45,12 @@ public class MemberCommands implements CommandExecutor {
 
 		//If player is online
 		if (Bukkit.getPlayer(userPlaytime) != null) {
-			//Get Playtime from config
-			PlaytimeEventHandler peh = new PlaytimeEventHandler(plugin);
+			//Get Playtime from config			
 			Player p = Bukkit.getPlayer(userPlaytime);
-			peh.updatePlayTime(p);
+			PlaytimeEventHandler.INSTANCE.updatePlayTime(p);
 			
 			//Make playtime readable
-			double playtime = peh.getPlayTime(p);
+			double playtime = PlaytimeEventHandler.INSTANCE.getPlayTime(p);
 			playtime = playtime / 60;
 			DecimalFormat df = new DecimalFormat("#.##");
 			

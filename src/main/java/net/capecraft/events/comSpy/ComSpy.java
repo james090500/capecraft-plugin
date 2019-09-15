@@ -1,17 +1,15 @@
 package net.capecraft.events.comSpy;
 
-import net.md_5.bungee.api.ChatColor;
+import java.util.LinkedList;
+import java.util.Queue;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-
-import java.util.LinkedList;
-import java.util.Queue;
+import net.md_5.bungee.api.ChatColor;
 
 public class ComSpy implements Listener {
 
@@ -25,8 +23,10 @@ public class ComSpy implements Listener {
 
         String msg = (ChatColor.RED + "" +  ChatColor.BOLD + "[CC] " +ChatColor.RESET + "" + ChatColor.YELLOW + name + ": " + command);
         for (Player p : ComSpy.INSTANCE.ComListener){
-            p.sendMessage(msg);
-    }
+        	if(sender != p) {
+        		p.sendMessage(msg);
+        	}
+        }
     }
 
     public void addComListener(Player p) {

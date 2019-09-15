@@ -25,9 +25,8 @@ public class AfkCommand implements CommandExecutor {
 				if(!sender.hasPermission("group.alt")) {
 					if(sender.hasPermission("capecraft.playAfk")) {
 						int playerCount = Bukkit.getServer().getOnlinePlayers().size();
-						if(playerCount <= (ServerSlotManager.INSTANCE.maxPlayerCount - 1)){
-							PlaytimeEventHandler peh = new PlaytimeEventHandler(plugin);
-							peh.setAfk((Player) sender);
+						if(playerCount <= (ServerSlotManager.INSTANCE.maxPlayerCount - 1)){							
+							PlaytimeEventHandler.INSTANCE.setAfk((Player) sender);
 							return true;
 						}else{
 							sender.sendMessage(Main.PREFIX + "You cant afk! The server is too full!");

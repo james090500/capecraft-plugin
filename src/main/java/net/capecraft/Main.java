@@ -33,13 +33,18 @@ public class Main extends JavaPlugin {
 		getCommand("afk").setExecutor(new AfkCommand(this));
 
 		//Cape
-		getCommand("cape").setExecutor(new Capecommand());
+		getCommand("cape").setExecutor(new CapeCommand());
 		
 		//KeepInv Toggle
 		getCommand("keepinv").setExecutor(new KeepInvToggle());
 
 		//Command spy
 		getCommand("comspy").setExecutor(new ComSpyCommand());
+		
+		//Rules
+		getCommand("rules").setExecutor(new RuleCommands());
+		getCommand("altrules").setExecutor(new RuleCommands());
+		getCommand("afkrules").setExecutor(new RuleCommands());
 		
 		//Events
 		getServer().getPluginManager().registerEvents(new ServerSlotManager(), this);
