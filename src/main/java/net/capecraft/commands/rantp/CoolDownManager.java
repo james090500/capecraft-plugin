@@ -1,16 +1,11 @@
 package net.capecraft.commands.rantp;
 
-import org.bukkit.Bukkit;
-
 import java.util.HashMap;
 import java.util.UUID;
-import java.util.logging.Logger;
 
 public class CoolDownManager {
 
-    private Logger log = Bukkit.getLogger();;
-	
-	//Will contain the uuid of the users and when they executed the command
+    //Will contain the uuid of the users and when they executed the command
 	private HashMap<UUID, Long> cooldowns = new HashMap<>();
 	//60 second cooldown between commands
     public static final int DEFAULT_COOLDOWN = 300;
