@@ -54,7 +54,7 @@ public class Main extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new ItemFrameProtect(this), this);
 		getServer().getPluginManager().registerEvents(new ItemFrameProtect(this), this);
 		getServer().getPluginManager().registerEvents(new ComSpy(), this);
-		getServer().getPluginManager().registerEvents(new DamageTimer(),this);
+		getServer().getPluginManager().registerEvents(new DamageTimer(), this);
 
 		//PlaceHolderAPI
 		if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null){

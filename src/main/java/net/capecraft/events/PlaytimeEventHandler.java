@@ -174,7 +174,7 @@ public class PlaytimeEventHandler implements Listener {
 		if(playTimeMin >= 60000 && !p.hasPermission("group.legend")) {
 			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getUniqueId().toString() + " permission set group.legend");
 			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getUniqueId().toString() + " permission unset group.veteran");
-			Bukkit.broadcastMessage(Main.PREFIX + "§6" + p.getName() + " §rHas just earned the §r§6§lVETERAN§r rank!");
+			Bukkit.broadcastMessage(Main.PREFIX + "§6" + p.getName() + " §rHas just earned the §r§e§lLEGEND§r rank!");
 			plugin.getServer().dispatchCommand(Bukkit.getConsoleSender(), "advancement grant " + p.getName() + " only capecraft:legend");
 		}
 	}

@@ -1,16 +1,12 @@
 package net.capecraft.commands.utils;
 
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-
 import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
+
+import org.bukkit.entity.Player;
 
 public class AntiCheese {
-
-    private Logger log = Bukkit.getLogger();
 
     private HashMap<UUID, Long> damageEvent = new HashMap<>();
 
