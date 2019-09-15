@@ -16,7 +16,7 @@ public class DamageTimer implements Listener {
     public void onDamage(EntityDamageEvent event){
         if (event.getEntity() instanceof Player) {            
         	//Puts player in combat mode for 5 seconds
-            AntiCheese.INSTANCE.setDamageEvent((Player) event.getEntity(), 5);
+            AntiCheese.INSTANCE.setDamageEvent((Player) event.getEntity());
         }
     }
 }

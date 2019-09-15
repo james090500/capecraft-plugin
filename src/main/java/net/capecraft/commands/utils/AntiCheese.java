@@ -23,25 +23,25 @@ public class AntiCheese {
      * @param player The Player Object
      * @param combatInSeconds Seconds for the player to be in combat
      */
-    public void setDamageEvent(Player player, long combatInSeconds) {
-    	//Calculates time when player will no longer be in combat and insert its to the hashmap
-    	long combatTime = System.currentTimeMillis() + (combatInSeconds * 1000);
-        damageEvent.put(player.getUniqueId(), combatTime);
+    public void setDamageEvent(Player player) {
+    	damageEvent.put(player.getUniqueId(), System.currentTimeMillis());
     }
 
     /**
      * Check if player is in combat
      * @param player The Player Object
+     * @param combatInSeconds Seconds for the player to be in combat
      * @return whether the player is in combat
      */
-	public boolean isInCombat(Player player) {
+	public boolean isInCombat(Player player, long combatInSeconds) {
 		//Get player uuid
 		UUID uuid = player.getUniqueId();
 		
 		//Check if uuid is in damage hashmap
 		if(damageEvent.containsKey(uuid)) {			
 			//If it is, check the value is less than current time
-			if(damageEvent.get(uuid) < System.currentTimeMillis()) {
+			long combatTime = damageEvent.get(uuid) + (combatInSeconds * 1000);
+			if(combatTime < System.currentTimeMillis()) {
 				//Remove from hashmap as player not in combat
 				damageEvent.remove(uuid);
 				return false;

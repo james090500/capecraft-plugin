@@ -43,7 +43,7 @@ public class RandomTP implements CommandExecutor {
 
 		//If player is past cooldown and not in combat
 		if(TimeUnit.MILLISECONDS.toSeconds(timePast) >= CoolDownManager.DEFAULT_COOLDOWN) {
-			if(!AntiCheese.INSTANCE.isInCombat(player)){
+			if(!AntiCheese.INSTANCE.isInCombat(player, 5)) {
 				//Will generate random number between -MAX and MAX
 				Random rand = new Random();
 				int RAND_X = rand.nextInt(MAX_X + 1 + MAX_X) - MAX_X;
