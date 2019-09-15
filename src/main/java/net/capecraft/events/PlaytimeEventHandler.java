@@ -38,17 +38,17 @@ public class PlaytimeEventHandler implements Listener {
 
 	/**
 	 * Constructor, sets basic variables such as folders and the instance
-	 * @param p
+	 * @param pluginInstance The plugin instance
 	 */
-	public PlaytimeEventHandler(Plugin p) {
-		plugin = p;
+	public PlaytimeEventHandler(Plugin pluginInstance) {
+		this.plugin = pluginInstance;
 
 		//Makes plugin folders if they don't exist
-		if(!p.getDataFolder().exists()) {
-			p.getDataFolder().mkdir();
+		if(!plugin.getDataFolder().exists()) {
+			plugin.getDataFolder().mkdir();
         }
 
-		memberFolder = new File(p.getDataFolder() + "/users/");
+		memberFolder = new File(plugin.getDataFolder() + "/users/");
 
 		if(!memberFolder.exists()) {
 			memberFolder.mkdir();
@@ -60,23 +60,23 @@ public class PlaytimeEventHandler implements Listener {
 
 	/**
 	 * Returns a users play time
-	 * @param p
+	 * @param player The Player Object
 	 * @return
 	 */
-	public int getPlayTime(Player p) {
+	public int getPlayTime(Player player) {
 		//Update the playtime first
-		updatePlayTime(p);
+		updatePlayTime(player);
 
 		//Now return playtime		
-		return (int) readConfig(playtime, p.getUniqueId().toString());		
+		return (int) readConfig(playtime, player.getUniqueId().toString());		
 	}
 
 
 	/**
 	 * Updates the config in memory and saves to IO
-	 * @param line
-	 * @param value
-	 * @param uuid
+	 * @param line The line of the config 
+	 * @param value The value to change
+	 * @param uuid The uuid of the config
 	 */
 	public void updateConfig(String line, Object value, String uuid) {
 		File userFile = new File(memberFolder, uuid + ".yml");
@@ -118,9 +118,9 @@ public class PlaytimeEventHandler implements Listener {
 
 	/**
 	 * Read config in to memory if not already loaded. Else it will read from memory
-	 * @param line
-	 * @param uuid
-	 * @return
+	 * @param line The line of the config 
+	 * @param uuid The uuid to change
+	 * @return Value from config
 	 */
 	public Object readConfig(String line, String uuid) {		
 		if(playerConfigs.get(uuid) != null) {			
@@ -135,7 +135,6 @@ public class PlaytimeEventHandler implements Listener {
 
 	/**
 	 * Resets configs to normal. Add alts to queues. And gives playtime ranks
-	 * @param event
 	 */
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event) {
@@ -214,7 +213,6 @@ public class PlaytimeEventHandler implements Listener {
 
 	/**
 	 * Updates player config and removes from memory on leave
-	 * @param event
 	 */
 	@EventHandler
 	public void onLeave(PlayerQuitEvent event) {
@@ -226,7 +224,7 @@ public class PlaytimeEventHandler implements Listener {
 
 	/**
 	 * Updates the play time
-	 * @param player
+	 * @param player The Player Object
 	 */
 	public void updatePlayTime(Player player) {
 		//gets UUID to string
@@ -250,7 +248,7 @@ public class PlaytimeEventHandler implements Listener {
 
 	/**
 	 * Sets player AFK and updates config
-	 * @param player
+	 * @param player The Player Object
 	 */
 	public void setAfk(Player player) {
 		//gets UUID to string - mov51

@@ -23,16 +23,16 @@ public class KeepInvToggle implements CommandExecutor {
 	
 	/**
 	 * Toggle inventory toggle of player
-	 * @param p
+	 * @param player The player object
 	 */
-	private void toggleInv(Player p) {
+	private void toggleInv(Player player) {
 		//If player has keepInv permission, then turn it off, else turn it on
-		if(p.hasPermission("essentials.keepinv")) {
-			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getUniqueId().toString() + " permission set essentials.keepinv false");
-			p.sendMessage(Main.PREFIX + "Your KeepInventory has been turned off");
+		if(player.hasPermission("essentials.keepinv")) {
+			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + player.getUniqueId().toString() + " permission set essentials.keepinv false");
+			player.sendMessage(Main.PREFIX + "Your KeepInventory has been turned off");
 		} else {
-			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + p.getUniqueId().toString() + " permission unset essentials.keepinv");
-			p.sendMessage(Main.PREFIX + "Your KeepInventory has been turned on");
+			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "lp user " + player.getUniqueId().toString() + " permission unset essentials.keepinv");
+			player.sendMessage(Main.PREFIX + "Your KeepInventory has been turned on");
 		}
 	}
 

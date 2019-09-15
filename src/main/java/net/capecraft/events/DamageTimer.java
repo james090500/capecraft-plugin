@@ -11,7 +11,6 @@ public class DamageTimer implements Listener {
 
 	/**
 	 * On Damage puts players in combat
-	 * @param event
 	 */
     @EventHandler
     public void onDamage(EntityDamageEvent event){

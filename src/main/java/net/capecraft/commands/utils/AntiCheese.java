@@ -20,8 +20,8 @@ public class AntiCheese {
     
     /**
      * Sets the a player to be damaged
-     * @param player
-     * @param time
+     * @param player The Player Object
+     * @param combatInSeconds Seconds for the player to be in combat
      */
     public void setDamageEvent(Player player, long combatInSeconds) {
     	//Calculates time when player will no longer be in combat and insert its to the hashmap
@@ -31,8 +31,8 @@ public class AntiCheese {
 
     /**
      * Check if player is in combat
-     * @param player
-     * @return
+     * @param player The Player Object
+     * @return whether the player is in combat
      */
 	public boolean isInCombat(Player player) {
 		//Get player uuid

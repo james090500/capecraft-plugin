@@ -15,8 +15,7 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 public class AfkCheck implements Listener {
 	
 	/**
-	 * Checks move event and tells player if they're afk
-	 * @param event
+	 * Checks move event and tells player if they're afk 
 	 */
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerMoveEvent(PlayerMoveEvent event){    	

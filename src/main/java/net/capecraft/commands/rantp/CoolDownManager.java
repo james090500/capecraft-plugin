@@ -19,8 +19,8 @@ public class CoolDownManager {
     
     /**
      * Add player to the cooldown list
-     * @param player
-     * @param time
+     * @param player The Player Object
+     * @param time The cooldown time
      */
     public void setCooldown(UUID player, long time){
         cooldowns.put(player, time);
@@ -28,8 +28,8 @@ public class CoolDownManager {
 
     /**
      * Will return how many seconds left in the cooldown
-     * @param player
-     * @return
+     * @param player The Player Object
+     * @return Seconds left in cooldown
      */
     public long getCooldown(UUID player){
         return (cooldowns.get(player) == null ? Long.valueOf(0) : cooldowns.get(player));

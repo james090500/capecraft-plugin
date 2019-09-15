@@ -34,7 +34,7 @@ public class RandomTP implements CommandExecutor {
 	
 	/**
 	 * Teleport's the player to a random coordinates
-	 * @param player
+	 * @param player The Player Object
 	 */
 	private void teleportPlayer(Player player) {
 		//Check if the player is past the cooldown time

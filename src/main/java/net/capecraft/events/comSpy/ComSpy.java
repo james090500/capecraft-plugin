@@ -22,8 +22,7 @@ public class ComSpy implements Listener {
     public ComSpy(){}
     
     /**
-     * Get all commands and send to comspy players
-     * @param event
+     * Get all commands and send to comspy players 
      */
     @EventHandler(priority = EventPriority.HIGHEST)
     public void PlayerCommandPreprocessEvent(PlayerCommandPreprocessEvent event) {
@@ -42,20 +41,20 @@ public class ComSpy implements Listener {
 
     /**
      * Add Player to comspy listener
-     * @param p
+     * @param player The Player object
      */
-    public void addComListener(Player p) {
+    public void addComListener(Player player) {
         //Adds player to the queue's singleton instance - mov51
-        ComSpy.INSTANCE.ComListener.add(p);
+        ComSpy.INSTANCE.ComListener.add(player);
     }
 
     /**
-     * Remove player from company listender
-     * @param p
+     * Remove player from company listener
+     * @param player The Player object
      */
-    public void removeComListener(Player p) {
+    public void removeComListener(Player player) {
         //Removes player from the queue's singleton instance - mov51
-        ComSpy.INSTANCE.ComListener.remove(p);
+        ComSpy.INSTANCE.ComListener.remove(player);
     }
 }
 
