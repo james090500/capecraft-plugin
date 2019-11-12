@@ -12,7 +12,7 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 public class MessageBlocker implements Listener {
 	
-	private String[] blockedCommands = {"/t", "/w", "/msg", "/tell", "/whisper"};
+	private String[] blockedCommands = {"/t", "/w", "/msg", "/tell", "/whisper", "/m"};
 	
     @EventHandler(priority = EventPriority.HIGHEST)
     public void PlayerCommandPreprocessEvent(PlayerCommandPreprocessEvent event) {
