@@ -28,10 +28,8 @@ public class MessageBlocker implements Listener {
             if(ArrayUtils.contains(blockedMessages, commandLabel.toLowerCase())|ArrayUtils.contains(blockedCommands, commandLabel.toLowerCase())|ArrayUtils.contains(blockedMovement, commandLabel.toLowerCase())) {
             	//See if the msg is to a player
             	if(args.length > 1) {
-            		String user = args[1];
-	                if(Bukkit.getPlayer(user) != null) {
-	                	Player player = Bukkit.getPlayer(user);
-						if (player != null) {
+            		Player player = Bukkit.getPlayer(args[1]);
+	                if(player != null) {
 							if(ArrayUtils.contains(blockedMessages, commandLabel.toLowerCase())){
 								if (player.hasPermission("group.alt")) {
 									event.setCancelled(true);
@@ -76,4 +74,3 @@ public class MessageBlocker implements Listener {
             }
         }
     }
-}
