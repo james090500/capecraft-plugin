@@ -1,6 +1,8 @@
 package net.capecraft.events;
 
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Bukkit;
@@ -12,6 +14,8 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 public class MessageBlocker implements Listener {
 	
+	private ComponentBuilder prefix = new ComponentBuilder("[CC] ").bold(true).color(ChatColor.RED);
+
 	private String[] blockedMessages = {"/t", "/w", "/msg", "/tell", "/whisper", "/m"};
 	private String[] blockedCommands = {"/pay"};
 	private String[] blockedMovement = {"/tpa", "/tpask"};
@@ -30,47 +34,40 @@ public class MessageBlocker implements Listener {
             	if(args.length > 1) {
             		Player player = Bukkit.getPlayer(args[1]);
 	                if(player != null) {
-							if(ArrayUtils.contains(blockedMessages, commandLabel.toLowerCase())){
-								if (player.hasPermission("group.alt")) {
-									event.setCancelled(true);
-									String msg = (ChatColor.RED + "" +  ChatColor.BOLD + "[CC] " +ChatColor.RESET + "" + ChatColor.RED + "You cant message an alt! They are muted!");
-									event.getPlayer().sendMessage(msg);
-								} else if(ServerSlotManager.INSTANCE.afkQueueList.contains(player)){
-									event.setCancelled(true);
-									String msg = (ChatColor.RED + "" +  ChatColor.BOLD + "[CC] " +ChatColor.RESET + "" + ChatColor.RED + "This player is AFK and unlikely to respond! ");
-									event.getPlayer().sendMessage(msg);
-									String msg2 = (ChatColor.RED + "" +  ChatColor.BOLD + "[CC] " +ChatColor.RESET + "" + ChatColor.RED + "Your message has been canceled, try again later!");
-									event.getPlayer().sendMessage(msg2);
-								}
-							} else if (ArrayUtils.contains(blockedCommands, commandLabel.toLowerCase())){
-								if (player.hasPermission("group.alt")) {
-									event.setCancelled(true);
-									String msg = (ChatColor.RED + "" +  ChatColor.BOLD + "[CC] " +ChatColor.RESET + "" + ChatColor.RED + "If you pay an alt the money will be lost! Don't do that!");
-									event.getPlayer().sendMessage(msg);
-								} else if(ServerSlotManager.INSTANCE.afkQueueList.contains(player)){
-									event.setCancelled(true);
-									String msg = (ChatColor.RED + "" +  ChatColor.BOLD + "[CC] " +ChatColor.RESET + "" + ChatColor.RED + "This player is AFK and unlikely to notice your payment! ");
-									event.getPlayer().sendMessage(msg);
-									String msg2 = (ChatColor.RED + "" +  ChatColor.BOLD + "[CC] " +ChatColor.RESET + "" + ChatColor.RED + "Your payment has been canceled, try again later!");
-									event.getPlayer().sendMessage(msg2);
-								}
-							} else if (ArrayUtils.contains(blockedMovement, commandLabel.toLowerCase())){
-								if (player.hasPermission("group.alt")) {
-									event.setCancelled(true);
-									String msg = (ChatColor.RED + "" +  ChatColor.BOLD + "[CC] " +ChatColor.RESET + "" + ChatColor.RED + "You can not tp to alts! You will have to teleport the alt to your location.");
-									event.getPlayer().sendMessage(msg);
-								} else if(ServerSlotManager.INSTANCE.afkQueueList.contains(player)){
-									event.setCancelled(true);
-									String msg = (ChatColor.RED + "" +  ChatColor.BOLD + "[CC] " +ChatColor.RESET + "" + ChatColor.RED + "You can not tp to afk players!");
-									event.getPlayer().sendMessage(msg);
-									String msg2 = (ChatColor.RED + "" +  ChatColor.BOLD + "[CC] " +ChatColor.RESET + "" + ChatColor.RED + "Your request to tp has been canceled, wait until they are no longer afk.");
-									event.getPlayer().sendMessage(msg2);
-								}
+	                	BaseComponent[] msg = null;
+	                	BaseComponent[] blockMsg;
+                	
+						if(ArrayUtils.contains(blockedMessages, commandLabel.toLowerCase())) {							
+							if (player.hasPermission("group.alt")) {
+								msg = prefix.append("You cant message an alt! They are muted!").bold(false).create();
+							} else if(ServerSlotManager.INSTANCE.afkQueueList.contains(player)){
+								msg = prefix.append("This player is AFK and unlikely to respond!").bold(false).create();									
 							}
-
+							blockMsg = prefix.append("Your message has been canceled, try again later!").bold(false).create();
+						} else if (ArrayUtils.contains(blockedCommands, commandLabel.toLowerCase())){							
+							if (player.hasPermission("group.alt")) {
+								msg = prefix.append("If you pay an alt the money will be lost! Don't do that!").bold(false).create();
+							} else if(ServerSlotManager.INSTANCE.afkQueueList.contains(player)){
+								msg = prefix.append("This player is AFK and unlikely to notice your payment!").bold(false).create();									
+							}
+							blockMsg = prefix.append("Your payment has been canceled, try again later!").bold(false).create();
+						} else if (ArrayUtils.contains(blockedMovement, commandLabel.toLowerCase())){							
+							if (player.hasPermission("group.alt")) {									
+								msg = prefix.append("You can not tp to alts! You will have to teleport the alt to your location.").bold(false).create();
+							} else if(ServerSlotManager.INSTANCE.afkQueueList.contains(player)){
+								msg = prefix.append("You can not tp to afk players!").bold(false).create();									
+							}
+							blockMsg = prefix.append("Your request to tp has been canceled, wait until they are no longer afk.").bold(false).create();
+						} else {
+							return;
 						}
-					}
+						
+						event.setCancelled(true);
+						event.getPlayer().spigot().sendMessage(msg);
+						event.getPlayer().spigot().sendMessage(blockMsg);						
+	                }
             	}
             }
         }
     }
+}
