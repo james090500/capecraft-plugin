@@ -141,7 +141,7 @@ public class PlaytimeEventHandler implements Listener {
 
 		String uuid = player.getUniqueId().toString();
 
-		updateConfig(alt, player.hasPermission("grouplayer.alt"), uuid);
+		updateConfig(alt, player.hasPermission("group.alt"), uuid);
 		updateConfig(jointime, (System.currentTimeMillis() / 1000), uuid);
 		updateConfig(username, player.getName(), uuid);		
 		updateConfig(afk, false, uuid);
